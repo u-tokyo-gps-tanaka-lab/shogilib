@@ -81,7 +81,8 @@ def test_is_consistent():
     for fen in fens:
         p = Position.from_fen(fen)
         assert p.is_consistent()
-    fens = ['lnsgkgsnl/1r5b1/1pppppppp/1p7/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] w', 'lnsgkgsnl/1r5b1/ppppppppp/9/9/8p/PPPPPPP1P/1B5R1/LNSGKGSNL[-] b']
+    fens = ['lnsgkgsnl/1r5b1/ppppppppp/1p7/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] w', 'lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPP2/1B5R1/LNSGKGSNL[-] b']
     for fen in fens:
+        print(f'fen={fen}')
         p = Position.from_fen(fen)
         assert not p.is_consistent()
