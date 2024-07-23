@@ -499,7 +499,7 @@ class Position:
             if not pos1.can_capture_op_king():
                 return False
         return True            
-    def legal_pawn_positions(self):
+    def legal_piece_positions(self):
         # 二歩
         for x in range(W):
             if sum(self.board[y][x] == PAWN.to_piece(WHITE) for y in range(H)) > 1:
@@ -508,15 +508,26 @@ class Position:
                 return False
         # 行きどころのない歩
         for x in range(W):
-            if self.board[0][x] == PAWN.to_piece(WHITE):
+            print(f'0: x={x}', self.board[0][x], self.board[1][x])
+            if self.board[0][x] == PAWN.to_piece(WHITE) or self.board[0][x] == LANCE.to_piece(WHITE) or self.board[0][x] == KNIGHT.to_piece(WHITE):
+                print(f'1.1:')
                 return False
-            if self.board[H - 1][x] == PAWN.to_piece(BLACK):
+            if self.board[1][x] == KNIGHT.to_piece(WHITE):
+                print(f'1.2:')
+                return False
+            print(f'1: x={x}', self.board[H - 1][x], self.board[H - 2][x])
+            if self.board[H - 1][x] == PAWN.to_piece(BLACK) or self.board[H - 1][x] == LANCE.to_piece(BLACK) or self.board[H - 1][x] == KNIGHT.to_piece(BLACK):
+               print(f'3:')
                return False
+            if self.board[H - 2][x] == KNIGHT.to_piece(BLACK):
+                print(f'4:')
+                return False
+            return True
         return True
     def can_capture_op_king(self):
         return self.in_check(self.side_to_move.flip())
     def illegal(self):
-        return not self.legal_pawn_positions() or self.can_capture_op_king()
+        return not self.legal_piece_positions() or self.can_capture_op_king()
     def __str__(self):
         return f'Position{(self.side_to_move, self.board, self.hands)}'
 # ## 一手前の局面をすべて作成する generate_previous_positions

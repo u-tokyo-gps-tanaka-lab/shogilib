@@ -77,6 +77,8 @@ def test_position_in_dict():
         assert Position.from_fen(fen) in d                    
 
 def test_is_consistent():
+    p = Position.from_fen('4k4/9/9/9/9/9/9/9/n3K4[pppppppppPPPPllLLnNNssSSggGGbBrR] w')
+    assert p.board[8][0] == KNIGHT.to_piece(BLACK)
     fens = ['lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] w', 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] b']
     for fen in fens:
         p = Position.from_fen(fen)
@@ -87,15 +89,26 @@ def test_is_consistent():
         p = Position.from_fen(fen)
         assert not p.is_consistent()
 
-def test_legal_pawn_positions():
+def test_legal_piece_positions():
     # 行き場のない歩
     for p in ['Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] w', 'Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] b', 
               '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[lL] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[lL] b']:
-        assert not Position.from_fen(p).legal_pawn_positions()
+        assert not Position.from_fen(p).legal_piece_positions()
+    # 行き場のない香車
+    for p in ['Lnsgkgsnl/1r5b1/1pppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[lp] w', 'Lnsgkgsnl/1r5b1/1pppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[lp] b', 
+              '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/lNSGKGSNL[lLp] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/lNSGKGSNL[plL] b']:
+        assert not Position.from_fen(p).legal_piece_positions()     
+    for p in ['N3k4/9/9/9/9/9/9/9/4K4[pppppppppPPPPllLLnNNssSSggGGbBrR] w',
+                'N3k4/9/9/9/9/9/9/9/4K4[pppppppppPPPPllLLnNNssSSggGGbBrR] b',
+                '4k4/1N7/9/9/9/9/9/9/4K4[pppppppppPPPPllLLnNNssSSggGGbBrR] w',
+                '4k4/1N7/9/9/9/9/9/9/4K4[pppppppppPPPPllLLnNNssSSggGGbBrR] b',
+                '4k4/9/9/9/9/9/9/9/n3K4[pppppppppPPPPllLLnNNssSSggGGbBrR] w',
+                '4k4/9/9/9/9/9/9/9/n3K4[pppppppppPPPPllLLnNNssSSggGGbBrR] b',]:
+        assert not Position.from_fen(p).legal_piece_positions()              
     # 二歩
     for p in ['1nsgkgsnl/Pr5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] w', 
               '1nsgkgsnl/Pr5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] b',
               'pnsgkgsnl/1r5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] w', 
               'pnsgkgsnl/1r5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] b', 
               ]:
-        assert not Position.from_fen(p).legal_pawn_positions()
+        assert not Position.from_fen(p).legal_piece_positions()
