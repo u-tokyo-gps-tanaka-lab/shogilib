@@ -86,3 +86,16 @@ def test_is_consistent():
         print(f'fen={fen}')
         p = Position.from_fen(fen)
         assert not p.is_consistent()
+
+def test_legal_pawn_positions():
+    # 行き場のない歩
+    for p in ['Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] w', 'Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] b', 
+              '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[lL] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[lL] b']:
+        assert not Position.from_fen(p).legal_pawn_positions()
+    # 二歩
+    for p in ['1nsgkgsnl/Pr5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] w', 
+              '1nsgkgsnl/Pr5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] b',
+              'pnsgkgsnl/1r5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] w', 
+              'pnsgkgsnl/1r5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] b', 
+              ]:
+        assert not Position.from_fen(p).legal_pawn_positions()
