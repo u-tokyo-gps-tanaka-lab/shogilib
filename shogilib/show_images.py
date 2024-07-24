@@ -65,7 +65,7 @@ def position_image(pos):
         counts = Counter(hands)
         kvs = list(counts.items())
         for i, (k, v) in enumerate(kvs):
-            piece = k.to_piece(Player(pl))
+            piece = k.to_piece(WHITE)
             pimage = piece2img2[piece]
             if pl == 0:
                 cx, cy = int(grid * W + offset_x + 0.5 * grid - 6), int(grid * (H - 1 - 0.5 * (i + 1)) + offset_y)
