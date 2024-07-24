@@ -335,11 +335,11 @@ class Position:
         for pi in range(2):
             for ptype in self.hands[pi]:
                 piececount[ptype.to_piece(Player(pi))] += 1
-        #print(f'piececount={piececount}')
+        
         basecount = defaultdict(int)     
         for piece, v in piececount.items():
             basecount[piece.ptype().unpromote_if()] += v
-        
+        #print(f'basecount={basecount}')
         for ptype in Ptype:
             if ptype != Ptype.BLANK and not ptype.is_promoted() and basecount[ptype] != ptype_counts[ptype]:
                 #print(f'type2, ptype={ptype}')
@@ -377,8 +377,8 @@ class Position:
     # rook, bishop, promoted rook, promoted bishop
     def plm_piece(self, moves, player, ptype, y, x):
         #print(f'piece={ptype.to_piece(player)}, short_directions={PIECE_SHORT_DIRECTIONS[ptype.to_piece(player)]}')
-        print(f'type(ptype)={type(ptype)}')
-        print(f'ptype={ptype}, player={player}, piece={ptype.to_piece(player)}, long_directions={PIECE_LONG_DIRECTIONS}, shor_directions={PIECE_SHORT_DIRECTIONS}, {PIECE_SHORT_DIRECTIONS[ptype.to_piece(player)]}')
+        #print(f'type(ptype)={type(ptype)}')
+        #print(f'ptype={ptype}, player={player}, piece={ptype.to_piece(player)}, long_directions={PIECE_LONG_DIRECTIONS}, shor_directions={PIECE_SHORT_DIRECTIONS}, {PIECE_SHORT_DIRECTIONS[ptype.to_piece(player)]}')
         for dy, dx in PIECE_LONG_DIRECTIONS[ptype.to_piece(player)]:
             ny, nx = y + dy, x + dx
             while is_on_board(ny, nx): # これだとqueenの動きになってしまっている..
@@ -509,6 +509,7 @@ class Position:
         #print(f'plm={[m.to_uci() for m in self.plm(player)]}')
         for m in self.plm(player):
             pos1 = self.apply_move(player, m)
+            #print(f'm={m}, pos1={pos1}')
             #print(f'm={m.to_uci()}, pos1={pos1.fen()}')
             if not pos1.can_capture_op_king():
                 return False

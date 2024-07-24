@@ -1,5 +1,5 @@
 from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y, player2c, Move
-from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT
+from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT, BLANK, king_checkmate_pawn
 
 def test_player():
     assert WHITE.value == 0
@@ -129,6 +129,35 @@ def test_legal_piece_positions():
               ]:
         assert not Position.from_fen(p).legal_piece_positions()
 
+def test_king_pos():
+    pos = Position.from_fen('Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] w')
+    assert pos.king_pos(WHITE) == (8, 4)
+    assert pos.king_pos(BLACK) == (0, 4)
+
+def test_in_check():
+    pos = Position.from_fen('r7g1/P6Gk/1pppppppp/9/9/2N7/1PPPPPPPP/9/K2R1[lllLnnNPbGGGGggssss] w')
+    assert pos.in_check(BLACK)
+    assert not pos.in_check(WHITE)
 
 
+def test_apply_move():
+    pos = Position.from_fen('r7g/P7k/1pppppppp/9/9/2N6/1PPPPPPPP/9/KG1R5[lllLnnNPbGGGGggssss] w')
+    pos1 = pos.apply_move(WHITE, Move.from_uci('a1a2'))
+    fen1 = pos1.fen()
+    assert fen1 == 'r7g/P7k/1pppppppp/9/9/2N6/1PPPPPPPP/K8/1G1R5[PLNGGGGlllnnssssbgg] b'
 
+def test_apply_unmove():
+    pos = Position.from_fen('r7g/P7k/1pppppppp/9/2N6/9/P1PPPPPPP/9/KG1R5[lllLnnNPbbggssss] b')
+    assert pos.is_consistent()
+    pos1 = pos.apply_unmove(WHITE, Move.from_uci('b3c5'), KNIGHT.to_piece(BLACK))
+    fen1 = pos1.fen()
+    assert fen1 == 'r7g/P7k/1pppppppp/9/2n6/9/PNPPPPPPP/9/KG1R5[PLlllnnssssbbgg] w'
+
+def test_checkmate():
+    pos = Position.from_fen('r7g/R8/1kppppppp/9/1PNG5/9/L1P1PPPPP/9/KG16[llLnnNPPPbGGGggssss] b')
+    assert pos.in_check(BLACK)
+    assert pos.in_checkmate()
+
+def test_king_checkmate_pawn():
+    pos = Position.from_fen('r7g/P5G1k/1pppppppP/8G/2N6/9/P1PPPPPPp/9/KG1R5[lllLnnNPbbssss] b')
+    assert king_checkmate_pawn(pos, 2, 8)
