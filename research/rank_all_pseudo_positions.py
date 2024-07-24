@@ -42,8 +42,11 @@ def comb(n, m):
 def count2N(c):
     hc, bc = c
     hcmult = 1
+    hcl = []
     for pt, v in hc:
         hcmult *= (v + 1)
+        hcl.append(v + 1)
+    bcl = []
     bcmult = H * (W // 2) * (H * W - 1) + H * (H * (W + 1) // 2 - 1) # KING position
     #print(f'bcmult={bcmult}')
     rest = H * W - 2
@@ -59,15 +62,20 @@ def count2N(c):
                     x += xadd
         #print(f'pt={pt}, v={v}, x={x}')
         bcmult *= x
+        bcl.append(x)
         rest -= v                            
-    return hcmult * bcmult
+    return hcmult * bcmult, (hcl, bcl)
 count2num = []
 count2offset = []
 countsum = 0
 for i in range(len(countall)):
     c = countall[i]
-    count2offset.append((countsum, c))
-    countsum += count2N(c)
+    if len(c) != 2:
+        print(f'i={i}, c={c}')
+    s, l = count2N(c)
+    countsum += s
+    count2offset.append((countsum, c, l))
+
 print(countsum)
 with open('count2i.json', 'w') as wf:
     json_str = json.dumps({'sum' : countsum, 'count2offset' : count2offset})
