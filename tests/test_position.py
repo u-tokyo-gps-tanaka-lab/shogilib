@@ -1,4 +1,4 @@
-from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y, player2c
+from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y, player2c, Move
 from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT
 
 def test_player():
@@ -30,6 +30,22 @@ def test_ptype_promote():
     for pt in [KING, GOLD]:
         assert not pt.can_promote()
         assert not pt.is_promoted()
+def test_must_promote_y():
+    assert PAWN.must_promote_y(WHITE, 0)
+    assert PAWN.must_promote_y(BLACK, 8)
+    assert not PAWN.must_promote_y(WHITE, 1)
+    assert not PAWN.must_promote_y(BLACK, 7)
+    assert LANCE.must_promote_y(WHITE, 0)
+    assert LANCE.must_promote_y(BLACK, 8)
+    assert not LANCE.must_promote_y(WHITE, 1)
+    assert not LANCE.must_promote_y(BLACK, 7)
+    assert KNIGHT.must_promote_y(WHITE, 0)
+    assert KNIGHT.must_promote_y(BLACK, 8)
+    assert KNIGHT.must_promote_y(WHITE, 1)
+    assert KNIGHT.must_promote_y(BLACK, 7)
+    assert not KNIGHT.must_promote_y(WHITE, 2)
+    assert not KNIGHT.must_promote_y(BLACK, 6)
+
 
 def test_piece():
     for pl in [BLACK, WHITE]:
@@ -112,3 +128,7 @@ def test_legal_piece_positions():
               'pnsgkgsnl/1r5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] b', 
               ]:
         assert not Position.from_fen(p).legal_piece_positions()
+
+
+
+

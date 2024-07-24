@@ -127,7 +127,18 @@ class Ptype(IntEnum):
     # promote可能か?
     def can_promote(self):
         return self.value < 8
-
+    def must_promote_y(self, player, y):
+        if self == Ptype.PAWN or self == Ptype.LANCE:
+            if player == WHITE:
+                return y == 0
+            else:
+                return y == H - 1
+        elif self == Ptype.KNIGHT:
+            if player == WHITE:
+                return y <= 1
+            else:
+                return y >= H - 2
+        return False                        
 
 # 成り駒: 自分なら+8、相手なら-8する
 KING = Ptype.KING
@@ -173,7 +184,7 @@ PTYPE_SHORT_DIRECTIONS: dict[int, list[tuple[int, int]]] = {
     GOLD : [N, S, E, West, NW, NE],
     SILVER: [N, NW, NE, SW, SE],
     LANCE: [],
-    KNIGHT: [],
+    KNIGHT: [NNW, NNE],
     PAWN: [N],
     ROOK.promote() : [NE, NW, SW, SE],
     BISHOP.promote() : [E, N, West, S],
@@ -366,12 +377,15 @@ class Position:
     # rook, bishop, promoted rook, promoted bishop
     def plm_piece(self, moves, player, ptype, y, x):
         #print(f'piece={ptype.to_piece(player)}, short_directions={PIECE_SHORT_DIRECTIONS[ptype.to_piece(player)]}')
+        print(f'type(ptype)={type(ptype)}')
+        print(f'ptype={ptype}, player={player}, piece={ptype.to_piece(player)}, long_directions={PIECE_LONG_DIRECTIONS}, shor_directions={PIECE_SHORT_DIRECTIONS}, {PIECE_SHORT_DIRECTIONS[ptype.to_piece(player)]}')
         for dy, dx in PIECE_LONG_DIRECTIONS[ptype.to_piece(player)]:
             ny, nx = y + dy, x + dx
             while is_on_board(ny, nx): # これだとqueenの動きになってしまっている..
                 # quiet
                 if self.can_move_on(player, ny, nx):
-                    moves.append(Move((y, x), (ny, nx), False))
+                    if not ptype.must_promote_y(player, ny):
+                        moves.append(Move((y, x), (ny, nx), False))
                     if ptype.can_promote() and (can_promote_y(player, y) or can_promote_y(player, ny)):
                         moves.append(Move((y, x), (ny, nx), True))
                 if self.board[ny][nx] != BLANK:
@@ -382,7 +396,7 @@ class Position:
             ny, nx = y + dy, x + dx
             if not is_on_board(ny, nx): continue
             if self.can_move_on(player, ny, nx):
-                if not (ptype == PAWN and can_promote_y(player, ny)):
+                if not ptype.must_promote_y(player, ny):
                     moves.append(Move((y, x), (ny, nx), False))
                 if ptype.can_promote() and (can_promote_y(player, y) or can_promote_y(player, ny)):
                     moves.append(Move((y, x), (ny, nx), True))
@@ -396,7 +410,7 @@ class Position:
                 if self.board[y][x] != BLANK:
                     continue
                 for pt in all_hand_ptype:
-                    if not(pt == PAWN and (xpawncount == 1 or can_promote_y(player, y))):
+                    if not (pt == PAWN and xpawncount == 1) and not pt.must_promote_y(player, y):
                         moves.append(Move.make_drop_move(pt, (y, x)))
 
     def plm(self, player):
@@ -506,23 +520,22 @@ class Position:
                 return False
             if sum(self.board[y][x] == PAWN.to_piece(BLACK) for y in range(H)) > 1:
                 return False
-        # 行きどころのない歩
+        # 行きどころのない歩，香車，桂馬
         for x in range(W):
-            print(f'0: x={x}', self.board[0][x], self.board[1][x])
+            #print(f'0: x={x}', self.board[0][x], self.board[1][x])
             if self.board[0][x] == PAWN.to_piece(WHITE) or self.board[0][x] == LANCE.to_piece(WHITE) or self.board[0][x] == KNIGHT.to_piece(WHITE):
-                print(f'1.1:')
+                #print(f'1.1:')
                 return False
             if self.board[1][x] == KNIGHT.to_piece(WHITE):
-                print(f'1.2:')
+                #print(f'1.2:')
                 return False
-            print(f'1: x={x}', self.board[H - 1][x], self.board[H - 2][x])
+            #print(f'1: x={x}', self.board[H - 1][x], self.board[H - 2][x])
             if self.board[H - 1][x] == PAWN.to_piece(BLACK) or self.board[H - 1][x] == LANCE.to_piece(BLACK) or self.board[H - 1][x] == KNIGHT.to_piece(BLACK):
-               print(f'3:')
+               #print(f'3:')
                return False
             if self.board[H - 2][x] == KNIGHT.to_piece(BLACK):
-                print(f'4:')
+                #print(f'4:')
                 return False
-            return True
         return True
     def can_capture_op_king(self):
         return self.in_check(self.side_to_move.flip())
