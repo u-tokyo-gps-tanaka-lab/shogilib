@@ -38,7 +38,7 @@ def comb(n, m):
     for i in range(m):
         ans = ans * (n - i) // (i + 1)
     return ans
-
+KPOS_COUNT = H * (W // 2) * (H * W - 1) + H * (H * (W + 1) // 2 - 1)
 def count2N(c):
     hc, bc = c
     hcmult = 1
@@ -47,7 +47,7 @@ def count2N(c):
         hcmult *= (v + 1)
         hcl.append(v + 1)
     bcl = []
-    bcmult = H * (W // 2) * (H * W - 1) + H * (H * (W + 1) // 2 - 1) # KING position
+    bcmult = KPOS_COUNT # KING position
     #print(f'bcmult={bcmult}')
     rest = H * W - 2
     for pt, v in bc:
@@ -66,19 +66,20 @@ def count2N(c):
         rest -= v                            
     return hcmult * bcmult, (hcl, bcl)
 count2num = []
-count2offset = []
+rank2count = []
 countsum = 0
 for i in range(len(countall)):
     c = countall[i]
     if len(c) != 2:
         print(f'i={i}, c={c}')
     s, l = count2N(c)
+    rank2count.append((countsum, c, l))
     countsum += s
-    count2offset.append((countsum, c, l))
+
 
 print(countsum)
 with open('count2i.json', 'w') as wf:
-    json_str = json.dumps({'sum' : countsum, 'count2offset' : count2offset})
+    json_str = json.dumps({'sum' : countsum, 'rank2count' : rank2count})
     wf.write(json_str)
 
 
