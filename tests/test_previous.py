@@ -18,12 +18,13 @@ def test_generate_previous_positions():
     assert pos.is_consistent()
     assert not pos.illegal()
     poslist = [pos1.fen() for pos1 in generate_previous_positions(pos)]
-    poslist1 = ['r7g/1P4G1k/1ppppppp1/7GP/2N6/9/P1PPPPPPp/9/KG1R5[PLNlllnnssssbb] w', 
-                'r7g/1P4G1k/1ppppppp+p/7GP/2N6/9/P1PPPPPPp/9/KG1R5[LNlllnnssssbb] w', 
-                'r7g/1P4G1k/1pppppppl/7GP/2N6/9/P1PPPPPPp/9/KG1R5[PNlllnnssssbb] w', 
-                'r7g/1P4G1k/1ppppppp+l/7GP/2N6/9/P1PPPPPPp/9/KG1R5[PNlllnnssssbb] w', 
-                'r7g/1P4G1k/1pppppppn/7GP/2N6/9/P1PPPPPPp/9/KG1R5[PLlllnnssssbb] w', 
-                'r7g/1P4G1k/1ppppppp+n/7GP/2N6/9/P1PPPPPPp/9/KG1R5[PLlllnnssssbb] w']
+    poslist1 = ['r7g/1P4G1k/1ppppppp1/7GP/2N6/9/P1PPPPPPp/9/KG1R5[NLPnnlllssssbb] w', 
+                'r7g/1P4G1k/1ppppppp+p/7GP/2N6/9/P1PPPPPPp/9/KG1R5[NLnnlllssssbb] w', 
+                'r7g/1P4G1k/1pppppppl/7GP/2N6/9/P1PPPPPPp/9/KG1R5[NPnnlllssssbb] w', 
+                'r7g/1P4G1k/1ppppppp+l/7GP/2N6/9/P1PPPPPPp/9/KG1R5[NPnnlllssssbb] w', 
+                'r7g/1P4G1k/1pppppppn/7GP/2N6/9/P1PPPPPPp/9/KG1R5[LPnnlllssssbb] w', 
+                'r7g/1P4G1k/1ppppppp+n/7GP/2N6/9/P1PPPPPPp/9/KG1R5[LPnnlllssssbb] w']
+    print(list(Position.from_fen(fen).fen() for fen in poslist1))
     #print(f'poslist={poslist}')
     for pos1 in poslist1:
         assert pos1 in poslist
@@ -31,7 +32,7 @@ def test_generate_previous_positions():
     assert 'r7g/1P4G1k/1ppppppp1/7G1/2N6/9/P1PPPPPPp/9/KG1R5[PPLNlllnnssssbb] w' not in poslist
 
 def test_do_undo():
-    posstr = 'r7g/1P4G1k/1pppppppP/7G1/2N6/9/P1PPPPPPp/9/KG1R5[PLNlllnnssssbb] b'
+    posstr = 'r7g/1P4G1k/1pppppppP/7G1/2N6/9/P1PPPPPPp/9/KG1R5[NLPnnlllssssbb] b'
     pos = Position.from_fen(posstr)
     assert pos.is_consistent()
     moves = pos.plm(pos.side_to_move)

@@ -13,6 +13,7 @@ from enum import Enum, IntEnum
 # - 自分の駒 < 相手の駒　でソートする．
 # 
 # 
+
 H = 9
 W = 9
 # プレイヤの定義
@@ -21,6 +22,9 @@ class Player(Enum):
     BLACK = 1
     def flip(self):
         return Player(1 - self.value)
+    def __lt__(self, other):
+        return self.value < other.value
+
 WHITE = Player.WHITE
 BLACK = Player.BLACK    
 
@@ -90,7 +94,14 @@ class Piece(IntEnum):
         s = s if self.player() == BLACK else s.upper()
         s = ('+' if self.is_promoted() else '') + s
         return s
+    def __lt__(self, other):
+        pt0, pt1 = self.ptype(), other.ptype()
+        if pt0 != pt1:
+            return pt0 < pt1
+        return self.player() < other.player()
+    
 BLANK = Piece.BLANK
+ptype2i = {}
 # ptype
 class Ptype(IntEnum):
     BLANK = 0
@@ -138,7 +149,12 @@ class Ptype(IntEnum):
                 return y <= 1
             else:
                 return y >= H - 2
-        return False                        
+        return False       
+    def __lt__(self, other):
+        i0, i1 = ptype2i[self.unpromote_if()], ptype2i[other.unpromote_if()]
+        if i0 != i1:
+            return i0 < i1
+        return self.is_promoted() and not other.is_promoted()
 
 # 成り駒: 自分なら+8、相手なら-8する
 KING = Ptype.KING
@@ -149,6 +165,8 @@ SILVER = Ptype.SILVER
 PAWN = Ptype.PAWN
 LANCE = Ptype.LANCE
 KNIGHT = Ptype.KNIGHT
+ptype_order = [KING, GOLD, KNIGHT, LANCE, PAWN, SILVER, ROOK, BISHOP, Ptype.BLANK]
+ptype2i = {x : i for i, x in enumerate(ptype_order)}
 
 ptype_counts = {
     PAWN: 18,

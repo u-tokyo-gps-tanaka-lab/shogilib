@@ -4,10 +4,11 @@ from shogilib import Ptype, BLACK, WHITE
 from shogilib.position import ptype_kchars, Ptype, Player
 
 from PIL import Image, ImageDraw, ImageFont
+IPAfont_path = '/Users/ktanaka/Library/Fonts/ipag.ttf'
 # ryzen0
 # IPAfont_path = '/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf'
 # thinkpad
-IPAfont_path = '/usr/share/fonts/OTF/ipag.ttf'
+# IPAfont_path = '/usr/share/fonts/OTF/ipag.ttf'
 
 def kimage(kchar, grid=40):
     im = Image.new("RGB", (grid, grid))
