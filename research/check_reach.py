@@ -38,8 +38,8 @@ def can_reach_KK(pos):
     i = 0
     while len(q) > 0:
         d, pos1 = heappop(q)
-        #if i % 1000 == 0:
-        #    print(f'len(q)={len(q)}, d={d}, pos1={pos1.fen()}')
+        if i % 1 == 0:
+            print(f'len(q)={len(q)}, d={d}, pos1={pos1.fen()}')
         i += 1
         #print(f'd={d}, pos1={pos1.fen()}')
         if d == 0:
@@ -69,20 +69,25 @@ def save_fen_list(fname, ls):
     with open(fname, 'w') as wf:
         wf.write('\n'.join(pos.fen() for pos in ls))
         wf.write('\n')
-prev_OK = load_fen_list('prev_OK.txt')            
-#
-print(f'len(piece) = {len(prev_OK)}')
-reach_OK = []
-reach_NG = []
-i = 0
-for pos in prev_OK:
-    i += 1
-    print(i, pos.fen())
-    #poslist = generate_previous_positions(pos)
-    if can_reach_KK(pos)[0]:
-        reach_OK.append(pos)
-    else:
-        reach_NG.append(pos)
 
-save_fen_list('reach_OK.txt', reach_OK)
-save_fen_list('reach_NG.txt', reach_NG)
+def main():
+    prev_OK = load_fen_list('prev_OK.txt')            
+    #
+    print(f'len(piece) = {len(prev_OK)}')
+    reach_OK = []
+    reach_NG = []
+    i = 0
+    for pos in prev_OK:
+        i += 1
+        print(i, pos.fen())
+        #poslist = generate_previous_positions(pos)
+        if can_reach_KK(pos)[0]:
+            reach_OK.append(pos)
+        else:
+            reach_NG.append(pos)
+
+    save_fen_list('reach_OK.txt', reach_OK)
+    save_fen_list('reach_NG.txt', reach_NG)
+
+if __name__ == '__main__':
+    main()

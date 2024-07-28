@@ -603,6 +603,13 @@ def generate_previous_moves(pos: Position):
                 moves.append(Move((ny, nx), (y, x), False))
             if ptype.is_promoted():
                 oldpiece = ptype.unpromote().to_piece(opp)
+                for dy, dx in PIECE_LONG_DIRECTIONS[oldpiece]:
+                    ny, nx = y - dy, x - dx
+                    while is_on_board(ny, nx) and pos.board[ny][nx] == BLANK:
+                        if ptype.is_promoted() and (can_promote_y(opp, y) or can_promote_y(opp, ny)):
+                            moves.append(Move((ny, nx), (y, x), True))
+                        ny -= dy
+                        nx -= dx
                 for dy, dx in PIECE_SHORT_DIRECTIONS[oldpiece]:
                     ny, nx = y - dy, x - dx
                     if not is_on_board(ny, nx) or pos.board[ny][nx] != BLANK: continue

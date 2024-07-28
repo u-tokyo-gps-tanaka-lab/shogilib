@@ -12,6 +12,11 @@ def test_generate_previous_moves():
         assert m in moves1
     for m in moves1:
         assert m in moves
+    pos = Position.from_fen('1K3k3/9/9/9/9/9/2+l6/9/9[GNNLLLPPPPPPPPSSRBgggnnppppppppppssrb] w')
+    assert not pos.illegal()
+    moves = set(generate_previous_moves(pos))
+    print(f'moves={list(sorted([m.to_uci() for m in moves]))}')
+    assert Move.from_uci('c5c3+') in moves
 
 def test_generate_previous_positions():
     pos = Position.from_fen('r7g/1P4G1k/1pppppppP/7G1/2N6/9/P1PPPPPPp/9/KG1R5[lllLnnNPbbssss] b')
