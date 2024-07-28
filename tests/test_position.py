@@ -2,6 +2,11 @@ from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y
 from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT, BLANK, king_checkmate_pawn
 
 
+def test_fen():
+    fen = 'l+s+pg3p1/s+p1P1b2N/r+p+p2PRL1/3ppgp2/3+p1+p1GS/1n2n+p+s2/1+b+pK3N1/+p2P4k/2+l1pLpg1[] w'
+    pos = Position.from_fen(fen)
+    assert pos.fen() == fen
+
 def test_position_equal():
     fens = ['lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] w', 'lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] b']
     for fen in fens:

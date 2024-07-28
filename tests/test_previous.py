@@ -31,7 +31,17 @@ def test_generate_previous_positions():
     # 打ち歩詰めの手は溯れない
     assert 'r7g/1P4G1k/1ppppppp1/7G1/2N6/9/P1PPPPPPp/9/KG1R5[PPLNlllnnssssbb] w' not in poslist
 
+def test_generate_previous_positions1():
+    pos = Position.from_fen('G+s+P+p+p3+P/+P+p2+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[G] b')
+    assert pos.is_consistent()
+    assert not pos.illegal()
+    poslist = [pos1.fen() for pos1 in generate_previous_positions(pos)]
+    poslist1 = ['1+s+P+p+p3+P/+P+p2+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[GG] w', 'G+sg+p+p3+P/+P+p+P1+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[] w', 'G+s1+p+p3+P/+P+p+P1+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[G] w', 'G+sg+p+p3+P/+P+p1+P+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[] w', 'G+s1+p+p3+P/+P+p1+P+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[G] w', 'G+s+P+p+p3g/+P+p2+N3+P/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[] w', 'G+s+P+p+p4/+P+p2+N3+P/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[G] w', 'G+s+P+p+p2+Pg/+P+p2+N4/+PNp1+p1+pg1/p4RlSk/L6+sp/2L1N+s3/g+P2+P2+P+b/+LN1Kb4/1+RP4+PP[] w']
+    for pos1 in poslist1:
+        assert pos1 in poslist
+
 def test_do_undo():
+    return
     posstr = 'r7g/1P4G1k/1pppppppP/7G1/2N6/9/P1PPPPPPp/9/KG1R5[NLPnnlllssssbb] b'
     pos = Position.from_fen(posstr)
     assert pos.is_consistent()

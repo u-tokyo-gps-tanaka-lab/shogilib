@@ -292,7 +292,7 @@ class Position:
     def from_fen(cls, fen="lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL[-] w"):
         fen_parts = fen.split(' ')
         if len(fen_parts) != 2:
-            raise 'fen format error'
+            raise Exception(f'fen format error : fen={fen}')
         board = [[Piece(0)] * W for _ in range(H)] # board: 段ごとのリストで盤面を表現する
         sbstart = fen_parts[0].index('[')
         bstr = fen_parts[0][:sbstart]
@@ -483,6 +483,7 @@ class Position:
         assert self.side_to_move == player.flip()
         new_board = list(list(l) for l in self.board)
         new_hands = list(list(l) for l in self.hands)
+        #print(f'new_hands={new_hands}, oldpiece={oldpiece}')
         to_sq = move.to_sq
         to_y, to_x = to_sq
         piece = self.board[to_y][to_x]
@@ -502,7 +503,7 @@ class Position:
             new_board[from_y][from_x] = piece
             if oldpiece != BLANK:
                 oldptype = oldpiece.ptype()
-                new_hands[player.value].remove(oldptype.unpromote())
+                new_hands[player.value].remove(oldptype.unpromote_if())
         pos1 = Position(player, new_board, new_hands)
         assert pos1.is_consistent()
         #if not pos1.is_consistent():
