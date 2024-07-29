@@ -1,0 +1,27 @@
+[project]
+name = "shogilib"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "sotaro-ici", email = "sotaro-ici@g.ecc.u-tokyo.ac.jp" }
+]
+dependencies = [
+    "pytest>=8.3.2",
+    "pillow>=10.4.0",
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shogilib"]
