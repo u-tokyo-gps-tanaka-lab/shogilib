@@ -3,6 +3,7 @@ def load_fen_list(fname):
     ans = []
     with open(fname) as f:
         for fen in f.readlines():
+            fen = fen.rstrip()
             pos = Position.from_fen(fen)
             ans.append(pos)
     return ans

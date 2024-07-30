@@ -327,7 +327,7 @@ class Position:
                 hands[0].append(pt)
         for pi in range(2):
             hands[pi].sort()
-        side_to_move = Player(0) if fen_parts[1] == 'w' else Player(1)
+        side_to_move = Player(0) if fen_parts[1][0] == 'w' else Player(1)
         return cls(side_to_move, board, hands)
     def to_tuple(self):
         board = tuple(tuple(l) for l in self.board)

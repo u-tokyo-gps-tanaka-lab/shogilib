@@ -24,9 +24,9 @@ def count_fenfile(fname):
                         piececount[piece] += 1
         for k, v in sorted(p2pos.items()):
             print(k)
-            #for y in range(H):
-            #    print(' '.join(str(p2pos[k][y][x]) for x in range(W)))
-            #print('\n')                
+            for y in range(H):
+                print(' '.join(str(p2pos[k][y][x]) for x in range(W)))
+            print('\n')                
             print(piececount[k])
 
 for fname in sys.argv[1:]:
