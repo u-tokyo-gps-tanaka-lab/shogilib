@@ -37,8 +37,10 @@ def test_is_consistent():
 def test_legal_piece_positions():
     # 行き場のない歩
     for p in ['Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] w', 'Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] b', 
-              '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[lL] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[lL] b']:
-        assert not Position.from_fen(p).legal_piece_positions()
+              '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[Ll] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[Ll] b']:
+        pos = Position.from_fen(p)
+        assert not pos.legal_piece_positions()
+        assert pos.fen() == p
     # 行き場のない香車
     for p in ['Lnsgkgsnl/1r5b1/1pppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[lp] w', 'Lnsgkgsnl/1r5b1/1pppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[lp] b', 
               '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/lNSGKGSNL[lLp] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/lNSGKGSNL[plL] b']:
