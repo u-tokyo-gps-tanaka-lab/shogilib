@@ -53,7 +53,7 @@ def test_piece_rank2pos():
 
 def test_basic_pt2comblist():
     for (pt, n_empty, allcount), count0 in [((PAWN, 79, 1), 79 * 4)]:
-        x, rank2comb = pt2comblist(pt, n_empty, allcount)
+        x, rank2comb, _ = pt2comblist(pt, n_empty, allcount)
         assert x == count0
         assert len(rank2comb) == 4
         for i, comb in rank2comb:
@@ -61,13 +61,13 @@ def test_basic_pt2comblist():
 
 def test_comb_table():
     for ((n_empty, allcount), v) in [((79, 1), 79 * 4)]:
-        x, rank2comb = canpromote2comb_table[n_empty][allcount]
+        x, rank2comb, _ = canpromote2comb_table[n_empty][allcount]
         assert x == v
         assert len(rank2comb) == 4
         for i, comb in rank2comb:
             assert sum(comb) == allcount
     for ((n_empty, allcount), v) in [((79, 1), 79 * 2)]:
-        x, rank2comb = nopromote2comb_table[n_empty][allcount]
+        x, rank2comb, _ = nopromote2comb_table[n_empty][allcount]
         assert x == v
         assert len(rank2comb) == 2
         for i, comb in rank2comb:
@@ -75,9 +75,9 @@ def test_comb_table():
 def test_basic_ptype_rank2pos():
     for pt, n_empty, n_pieces in [(PAWN, 79, 1), (GOLD, 78, 2), (SILVER, 10, 4), (ROOK, 15, 3)]:
         if pt.can_promote():
-            combcount, combsall = canpromote2comb_table[n_empty][n_pieces]
+            combcount, combsall, _ = canpromote2comb_table[n_empty][n_pieces]
         else:
-            combcount, combsall = nopromote2comb_table[n_empty][n_pieces]
+            combcount, combsall, _ = nopromote2comb_table[n_empty][n_pieces]
         pcmb2posl = defaultdict(list)
         for j in range(combcount):
             empties = list(range(n_empty))
@@ -101,9 +101,9 @@ def test_basic_ptype_rank2pos_random():
     for pt, n_empty, n_pieces in [(PAWN, 79, 1), (GOLD, 78, 2), (SILVER, 10, 4), (ROOK, 15, 3)]:
     #for pt, n_empty, n_pieces in [(SILVER, 10, 4)]:
         if pt.can_promote():
-            combcount, combsall = canpromote2comb_table[n_empty][n_pieces]
+            combcount, combsall, _ = canpromote2comb_table[n_empty][n_pieces]
         else:
-            combcount, combsall = nopromote2comb_table[n_empty][n_pieces]
+            combcount, combsall, _ = nopromote2comb_table[n_empty][n_pieces]
         p2count = defaultdict(int)
         for _ in range(1000):
             j = random.randrange(0, combcount)
