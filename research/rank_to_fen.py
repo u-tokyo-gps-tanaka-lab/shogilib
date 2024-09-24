@@ -5,8 +5,8 @@ from bisect import bisect_left, bisect_right
 from functools import reduce
 from operator import mul
 from shogilib import Ptype, WHITE, BLACK, KING, H, W
+import argparse
 from rank import countsum, rank2l, l2pos
-
 
 flipH_OK = []
 flipH_NG = []
@@ -25,16 +25,20 @@ def flipH_onboards(xs):
     ans.sort()
     return ans        
 
-def process_file(filename):
+def process_file(filename, parfile=False):
+    file_OK = f'{filename}_OK.txt' if parfile else 'flipH_OK.txt'
+    file_NG = f'{filename}_NG.txt' if parfile else 'flipH_NG.txt'
     with open(filename) as f:
-        with open('flipH_OK.txt', 'w') as wf1:
-            with open('flipH_NG.txt', 'w') as wf2:
+        with open(file_OK, 'w') as wf1:
+            with open(file_NG, 'w') as wf2:
                 for l in f.readlines():
                     x = int(l)
                     assert x < countsum
                     (hands, onboards) = rank2l(x)
                     onboards1 = onboards[:]
                     onboards.sort()
+                    #if onboards != onboards1:
+                    #    print(f'onboards={onboards}, onbords1={onboards1}')
                     assert onboards == onboards1
                     pos = l2pos((hands, onboards))
                     if flipH_onboards(onboards) < onboards:
@@ -42,8 +46,11 @@ def process_file(filename):
                     else:
                         wf1.write(pos.fen() + '\n')
 def main():
-    for fname in sys.argv[1:]:
-        process_file(fname)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filename')
+    parser.add_argument('-p', '--parallel', action='store_true')
+    args = parser.parse_args()
+    process_file(args.filename, args.parallel)
 
 if __name__ == "__main__":
     main()

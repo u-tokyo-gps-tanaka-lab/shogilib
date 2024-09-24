@@ -2,4 +2,4 @@ from shogilib.position import BLACK, WHITE, Player, Ptype, Piece, Position, can_
 
 from shogilib.position import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT, BLANK, H, W
 
-from shogilib.show_images import showstate, show_images_hv
+#from shogilib.show_images import showstate, show_images_hv

@@ -2,5 +2,5 @@
 
 for f in x*;
 do
-    python reach_partial.py $f 2>&1 > logs/${f}.log &
+    pypy3 check_reach.py -p $f 2>&1 > logs/${f}.log &
 done
