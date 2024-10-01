@@ -57,7 +57,7 @@ reach_NG = [
 ]
 
 images = [showstate(Position.from_fen(fen)) for fen in reach_NG]
-show_images_hv(images, 7, filename='reach_NG_nocheck.png')
+show_images_hv(images, 7, filename='reach_NG.png')
 
 reach_NG_nocheck = []
 
@@ -67,5 +67,12 @@ for fen in reach_NG:
     assert pos.legal_piece_positions()
     if not pos.in_check(WHITE):
         reach_NG_nocheck.append(fen)
+
+def save_fen_list(fname, ls):
+    with open(fname, 'w') as wf:
+        wf.write('\n'.join(pos.fen() for pos in ls))
+        wf.write('\n')
+
+save_fen_list('reach_NG_nocheck.txt', reach_NG_nocheck)
 
 print(f"Total={len(reach_NG_nocheck)}")
