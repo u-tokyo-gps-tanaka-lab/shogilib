@@ -40,7 +40,7 @@ def process_file(filename, parfile=False):
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:
-                for fen in f.readlines():
+                for fen in f:
                     pos = Position.from_fen(fen)
                     assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
                     tf, ans, heap_count = can_reach_KK(pos)
