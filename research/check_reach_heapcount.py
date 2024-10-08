@@ -59,13 +59,13 @@ def process_file(filename, parfile=False):
 def process_fen(fen):
     pos = Position.from_fen(fen)
     assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-    tf, ans, = can_reach_KK(pos)
+    tf, ans, heap_count = can_reach_KK(pos)
     showstate(pos, filename='check_reach_start.png')
     if tf:
-        print(f'tf=True, len(ans)={len(ans)}')
+        print(f'tf=True, len(ans)={len(ans)}, heap_count={heap_count}')
         show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, 'ans.png')
     else:
-        print(f'tf=False, ans={ans}')
+        print(f'tf=False, ans={ans}, heap_count={heap_count}')
 
 def main():
     parser = argparse.ArgumentParser()
