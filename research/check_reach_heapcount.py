@@ -4,6 +4,7 @@ import argparse
 
 from check_reach import distance_to_KK
 from shogilib import Position, generate_previous_positions, BLANK, KING, BLACK, WHITE, W, H
+from shogilib import showstate, show_images_hv        
 
 def can_reach_KK(pos):
     prev = {}
@@ -23,7 +24,7 @@ def can_reach_KK(pos):
             while pos1 != pos:
                 pos1 = prev[pos1]
                 ans.append(pos1)
-            ans.append(pos)
+            # ans.append(pos)
             #print(f'len(prev)={len(prev)}')
             return (True, [pos.fen() for pos in ans], i)
         for pos2 in generate_previous_positions(pos1):
@@ -55,12 +56,31 @@ def process_file(filename, parfile=False):
                         assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
                         wf2.write(pos.fen() + '\n')
 
+def process_fen(fen):
+    pos = Position.from_fen(fen)
+    assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
+    tf, ans, = can_reach_KK(pos)
+    showstate(pos, filename='check_reach_start.png')
+    if tf:
+        print(f'tf=True, len(ans)={len(ans)}')
+        show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, 'ans.png')
+    else:
+        print(f'tf=False, ans={ans}')
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename')
-    parser.add_argument('-p', '--parallel', action='store_true')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--fen', nargs=1, metavar='FEN')
+    group.add_argument('--file', nargs=1, metavar='FILENAME')
+    parser.add_argument('-p', '--parallel', action='store_true', help='for parallel processing; requires --file option')
     args = parser.parse_args()
-    process_file(args.filename, args.parallel)
+
+    if args.parallel and not args.file:
+        parser.error('-p option requires --file option')
+    if args.fen:
+        process_fen(args.fen[0])
+    else:
+        process_file(args.file[0], args.parallel)
 
 if __name__ == '__main__':
     main()
