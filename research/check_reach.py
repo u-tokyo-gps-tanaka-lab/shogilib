@@ -27,8 +27,8 @@ def distance_to_KK(pos):
                             if y < 6:
                                 ans += 6 - y                                
     assert len(kings) == 2
-    if abs(kings[0][0] - kings[1][0]) + abs(kings[0][1] - kings[1][1]) <= 2:
-        ans += 10
+    # if abs(kings[0][0] - kings[1][0]) + abs(kings[0][1] - kings[1][1]) <= 2:
+    #     ans += 10
     return ans        
 
 def can_reach_KK(pos):
@@ -49,7 +49,7 @@ def can_reach_KK(pos):
             while pos1 != pos:
                 pos1 = prev[pos1]
                 ans.append(pos1)
-            ans.append(pos)
+            # ans.append(pos)
             #print(f'len(prev)={len(prev)}')
             return (True, [pos.fen() for pos in ans])
         for pos2 in generate_previous_positions(pos1):
