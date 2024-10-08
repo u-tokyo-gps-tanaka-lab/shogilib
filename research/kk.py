@@ -1,4 +1,5 @@
 from collections import deque
+from shogilib import Position, showstate, show_images_hv
 import pprint
 import sys
 import re
@@ -49,6 +50,10 @@ for sente_x in range(1, 10):
                 if (sente_x, sente_y) != (gote_x, gote_y):
                     for side in players:
                         pos = ((sente_x, sente_y), (gote_x, gote_y), side)
+                        # 非合法局面の除去
+                        if adjacent((sente_x, sente_y), (gote_x, gote_y)):
+                            continue
+
                         KK.append(pos)
                         pos2index[pos] = index
                         index2pos[index] = pos
@@ -69,9 +74,9 @@ def generate_next_pos(pos, pos_to_index: dict):
             new_sente_x = sente_x + dx
             new_sente_y = sente_y + dy
             if 1 <= new_sente_x <= 9 and 1 <= new_sente_y <= 9:
-                if (new_sente_x, new_sente_y) != (gote_x, gote_y):
+                if (new_sente_x, new_sente_y) != (gote_x, gote_y) and not adjacent ((new_sente_x, new_sente_y), (gote_x, gote_y)):
                     new_pos = ((new_sente_x, new_sente_y), (gote_x, gote_y), 'Gote')
-                    if new_pos in pos_to_index:
+                    if new_pos in KK:
                         states.append(new_pos)
                     else:
                         raise Exception(f"Invalid state: {new_pos}")
@@ -81,9 +86,9 @@ def generate_next_pos(pos, pos_to_index: dict):
             new_gote_x = gote_x + dx
             new_gote_y = gote_y + dy
             if 1 <= new_gote_x <= 9 and 1 <= new_gote_y <= 9:
-                if (new_gote_x, new_gote_y) != (sente_x, sente_y):
+                if (new_gote_x, new_gote_y) != (sente_x, sente_y) and not adjacent ((new_gote_x, new_gote_y), (sente_x, sente_y)):
                     new_pos = ((sente_x, sente_y), (new_gote_x, new_gote_y), 'Sente')
-                    if new_pos in pos_to_index:
+                    if new_pos in KK:
                         states.append(new_pos)
                     else:
                         raise Exception(f"Invalid state: {new_pos}")
@@ -102,29 +107,29 @@ for idx, pos in enumerate(KK):
 
     adj[idx] = ranks
 
-# 連結性の確認
-def bfs(start):
+start_pos = ((9, 5), (1, 5), 'Sente')
+start_rank = pos2index[start_pos]
+showstate(Position.from_fen(pos2fen(*start_pos)), filename='kk-start.png')
+
+def dfs(start):
     visited = [False] * len(KK)
-    distances = [0] * len(KK)
-    parents = [None] * len(KK)
     
-    queue = deque()
-    queue.append(start)
+    stack = deque()
+    stack.append(start)
     visited[start] = True
 
-    while queue:
-        frm = queue.popleft()
+    while stack:
+        frm = stack.pop()
         for to in adj[frm]:
-            if not visited[to]:
-                visited[to] = True
-                distances[to] = distances[frm] + 1
-                parents[to] = frm
-                queue.append(to)
+            if visited[to]:
+                continue
+            visited[to] = True
+            stack.append(to)
 
-    return visited, distances, parents
+    return visited
 
-visited, distances, parents = bfs(0)
+visited = dfs(start_rank)
 if all(visited):
-    print("BFS Sucess")
+    print("DFS Sucess")
 else:
-    print("BFS Failure")
+    print("DFS Failure")
