@@ -62,7 +62,7 @@ def can_reach_KK(pos):
 def load_fen_list(fname):
     ans = []
     with open(fname) as f:
-        for fen in f.readlines():
+        for fen in f:
             pos = Position.from_fen(fen)
             ans.append(pos)
     return ans
@@ -77,7 +77,7 @@ def process_file(filename, parfile=False):
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:
-                for fen in f.readlines():
+                for fen in f:
                     pos = Position.from_fen(fen)
                     assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
                     tf, ans = can_reach_KK(pos)

@@ -4,7 +4,7 @@ def view_random(filename):
     bcount = [0] * 300
     lcount = 0
     with open(filename) as f:
-        for l in f.readlines():
+        for l in f:
             lcount += 1
             v = int(l)
             for i in range(len(bcount)):

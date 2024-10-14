@@ -9,7 +9,7 @@ assert len(sys.argv) == 2
 infname = sys.argv[1]
 prevOK = []
 with open(infname, 'r') as rf:
-    for l in rf.readlines():
+    for l in rf:
         prevOK.append(Position.from_fen(l))
 
 reachOK = []

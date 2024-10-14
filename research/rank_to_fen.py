@@ -31,7 +31,7 @@ def process_file(filename, parfile=False):
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:
-                for l in f.readlines():
+                for l in f:
                     x = int(l)
                     assert x < countsum
                     (hands, onboards) = rank2l(x)

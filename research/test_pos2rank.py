@@ -36,7 +36,7 @@ def test_pos2rank():
         if pos != pos1:
             print(f'rank={rank}, pos={pos.fen()}, pos1={pos1.fen()}')
         assert pos == pos1
-
+RANK_MAX = 80880932079767835177773204009328769812438521503800714936366945233084532
 def test_pos2rank_from_file():
     with open('check_OK.txt') as f:
         for lno in range(1000):
@@ -45,6 +45,7 @@ def test_pos2rank_from_file():
             #print(f'fen={fen}')
             pos = Position.from_fen(fen)
             rank = pos2rank(pos)
+            assert rank < RANK_MAX
             #print('pos={pos}, rank={rank}')
             pos1 = rank2pos(rank)
             assert pos == pos1
