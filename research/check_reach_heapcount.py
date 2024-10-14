@@ -2,34 +2,9 @@ from collections import defaultdict
 from heapq import heappush, heappop
 import argparse
 
+from check_reach import distance_to_KK
 from shogilib import Position, generate_previous_positions, BLANK, KING, BLACK, WHITE, W, H
-from shogilib import showstate, show_images_hv
-
-def distance_to_KK(pos):
-    ans = 0
-    kings = []
-    for y in range(H):
-        for x in range(W):
-            piece = pos.board[y][x]
-            if piece != BLANK:
-                ptype = piece.ptype()
-                if ptype == KING:
-                    kings.append((y, x))
-                else:
-                    ans += 10
-                    if ptype.is_promoted():
-                        ans += 10
-                        pl = piece.player()
-                        if pl == WHITE:
-                            if y > 3:
-                                ans += y - 3
-                        else:
-                            if y < 6:
-                                ans += 6 - y                                
-    assert len(kings) == 2
-    # if abs(kings[0][0] - kings[1][0]) + abs(kings[0][1] - kings[1][1]) <= 2:
-    #     ans += 10
-    return ans        
+from shogilib import showstate, show_images_hv        
 
 def can_reach_KK(pos):
     prev = {}
@@ -51,26 +26,14 @@ def can_reach_KK(pos):
                 ans.append(pos1)
             # ans.append(pos)
             #print(f'len(prev)={len(prev)}')
-            return (True, [pos.fen() for pos in ans])
+            return (True, [pos.fen() for pos in ans], i)
         for pos2 in generate_previous_positions(pos1):
             if pos2 not in prev:
                 prev[pos2] = pos1
                 distance[pos2] = distance[pos1] + 1
                 heappush(q, (distance_to_KK(pos2), pos2))
     maxd = max((v, k) for k, v in distance.items())
-    return (False, (maxd[0], maxd[1].fen()))
-
-def load_fen_list(fname):
-    ans = []
-    with open(fname) as f:
-        for fen in f:
-            pos = Position.from_fen(fen)
-            ans.append(pos)
-    return ans
-def save_fen_list(fname, ls):
-    with open(fname, 'w') as wf:
-        wf.write('\n'.join(pos.fen() for pos in ls))
-        wf.write('\n')
+    return (False, (maxd[0], maxd[1].fen()), i)
 
 def process_file(filename, parfile=False):
     file_OK = f'{filename}_OK.txt' if parfile else 'reach_OK.txt'
@@ -81,11 +44,11 @@ def process_file(filename, parfile=False):
                 for fen in f:
                     pos = Position.from_fen(fen)
                     assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-                    tf, ans = can_reach_KK(pos)
+                    tf, ans, heap_count = can_reach_KK(pos)
                     if tf:
-                        print(f'tf=True, len(ans)={len(ans)}')
+                        print(f'tf=True, len(ans)={len(ans)}, heap_count={heap_count}')
                     else:
-                        print(f'tf=False, ans={ans}')
+                        print(f'tf=False, ans={ans}, heap_count={heap_count}')
                     if tf:
                         assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
                         wf1.write(pos.fen() + '\n')
@@ -96,13 +59,13 @@ def process_file(filename, parfile=False):
 def process_fen(fen):
     pos = Position.from_fen(fen)
     assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-    tf, ans, = can_reach_KK(pos)
+    tf, ans, heap_count = can_reach_KK(pos)
     showstate(pos, filename='check_reach_start.png')
     if tf:
-        print(f'tf=True, len(ans)={len(ans)}')
+        print(f'tf=True, len(ans)={len(ans)}, heap_count={heap_count}')
         show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, 'ans.png')
     else:
-        print(f'tf=False, ans={ans}')
+        print(f'tf=False, ans={ans}, heap_count={heap_count}')
 
 def main():
     parser = argparse.ArgumentParser()
