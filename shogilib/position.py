@@ -4,19 +4,13 @@
 from collections import defaultdict
 from enum import Enum, IntEnum
 
-# # 将棋を定義する
-# 
-# piece については，
-# - piece は相手は負，promoteすると +8(相手駒は-8)
-# - promoteしていない番号が小さい順
-# - promoteしていない駒 < promoteしている駒
-# - 自分の駒 < 相手の駒　でソートする．
-# 
-# 
+## Define the game of Shogi 
 
+# The board sizes
 H = 9
 W = 9
-# プレイヤの定義
+
+# Sente (先手) is white, and Gote (後手) is black.
 class Player(Enum):
     WHITE = 0
     BLACK = 1
@@ -28,7 +22,7 @@ class Player(Enum):
 WHITE = Player.WHITE
 BLACK = Player.BLACK    
 
-# 先手の陣地はy=0, 後手ならy=4
+# The promotion zones for each player
 ZONE_Y_AXIS = {
     WHITE: [True] * 3 + [False] * 6,
     BLACK: [False] * 6 + [True] * 3
@@ -38,17 +32,22 @@ def player2c(player):
 def can_promote_y(player, y):
     return ZONE_Y_AXIS[player][y]
 
-
-# ## 駒と局面の定義
-
-# In[ ]:
 ptype_chars = '..plnsbrgkplnsbrgk'
 ptype_kchars = '　　歩香桂銀角飛金玉と杏圭全馬龍'
-# piece
+
+## pieces
 # 5 bit
 # bit 4 - player (0: white, 1: black)
 # bit 3 - is_promoted 
 # bit 0-2 - base piece number
+
+# The white pieces are defined as positive integers, and the black pieces as negative.
+# If a piece is promoted, its absolute value is increased by 8.
+
+# The positions are ordered according to the following rules:
+# - promoteしていない番号が小さい順
+# - promoteしていない駒 < promoteしている駒
+# - 自分の駒 < 相手の駒
 class Piece(IntEnum):
     BLANK = 0
     W_PAWN = 2
@@ -102,7 +101,8 @@ class Piece(IntEnum):
     
 BLANK = Piece.BLANK
 ptype2i = {}
-# ptype
+
+# Piece types are managed separately from the pieces.
 class Ptype(IntEnum):
     BLANK = 0
     BASIC_MIN = 2
@@ -135,7 +135,6 @@ class Ptype(IntEnum):
         if self != Ptype.BLANK:
             return Piece(self.value + (player.value << 4))
         return Piece(0)
-    # promote可能か?
     def can_promote(self):
         return self.value < 8
     def must_promote_y(self, player, y):
@@ -156,7 +155,6 @@ class Ptype(IntEnum):
             return i0 < i1
         return self.is_promoted() and not other.is_promoted()
 
-# 成り駒: 自分なら+8、相手なら-8する
 KING = Ptype.KING
 ROOK = Ptype.ROOK
 BISHOP = Ptype.BISHOP
@@ -168,6 +166,7 @@ KNIGHT = Ptype.KNIGHT
 ptype_order = [KING, GOLD, KNIGHT, LANCE, PAWN, SILVER, ROOK, BISHOP, Ptype.BLANK]
 ptype2i = {x : i for i, x in enumerate(ptype_order)}
 
+# How many pieces of each type are on the board?
 ptype_counts = {
     PAWN: 18,
     LANCE: 4,
@@ -178,12 +177,11 @@ ptype_counts = {
     GOLD: 4,
     KING: 2
 }
-# piece type
 
 def is_on_board(y, x):
     return 0 <= x < 9 and 0 <= y < 9
 
-# 先手の(y=0, x=0)から見た相対座標
+# Relative coordinates from (y=0, x=0) of the Sente player
 N = (-1, 0)
 S = (1, 0)
 E = (0, 1)
@@ -234,10 +232,8 @@ for ptype, ds in PTYPE_SHORT_DIRECTIONS.items():
     for y, x in lds:
         PIECE_LONG_DIRECTIONS[ptype.to_piece(BLACK)].append((-y, -x))    
 
-
-# square は (y, x) の順で指定する．
-# drop move は (10, ptype) で指定する．
-
+# The cordinate of a square is specified in the order of (y, x).
+# A drop move is specified as (10, ptype).
 def s2sq(s):
     assert len(s) == 2
     if s[1] == '@':
@@ -256,6 +252,7 @@ def sq2s(sq):
         c = ptype_chars[Ptype(x)].upper()
         return f'{c}@'
     return f'{"abcdefghi"[x]}{"987654321"[y]}'
+
 class Move:
     DROP_Y = 10
     def __init__(self, from_sq, to_sq, is_promote):
@@ -281,11 +278,10 @@ class Move:
         return hash((self.from_sq, self.to_sq, self.is_promote))
     def __eq__(self, other):
         return self.from_sq == other.from_sq and self.to_sq == other.to_sq and self.is_promote == other.is_promote
-# fairy-stockfish では UCI::move でMoveからStringに変換する．
-
+# In Fairy-stockfish, a move is converted to a string by UCI::move.
 
 class Position:
-    # 実際にはfenは2つ目以上のフィールドを省略できるが，ここでは4に決め打ちする
+    # Note that in the fen strings any field after the 2nd can be omitted, but we fix it to 4 here.
     def __init__(self, side_to_move, board, hands):
         self.side_to_move, self.board, self.hands = side_to_move, board, hands
     @classmethod
@@ -293,7 +289,7 @@ class Position:
         fen_parts = fen.split(' ')
         if len(fen_parts) != 2:
             raise Exception(f'fen format error : fen={fen}')
-        board = [[Piece(0)] * W for _ in range(H)] # board: 段ごとのリストで盤面を表現する
+        board = [[Piece(0)] * W for _ in range(H)] # The board is represented as a list of rows.
         sbstart = fen_parts[0].index('[')
         bstr = fen_parts[0][:sbstart]
         for y, l in enumerate(bstr.split('/')):
@@ -340,8 +336,7 @@ class Position:
     def __lt__(self, other): # to heap
     #    return True
         return self.to_tuple() < other.to_tuple()
-    # 駒の数の合計数が正しいことを確認する．
-    # 双方のkingが盤上にあることを確認する．
+    # Check that the total number of pieces is correct and both kings are on the board.
     def is_consistent(self):
         piececount = defaultdict(int)
         for y in range(H):
@@ -399,8 +394,8 @@ class Position:
         #print(f'ptype={ptype}, player={player}, piece={ptype.to_piece(player)}, long_directions={PIECE_LONG_DIRECTIONS}, shor_directions={PIECE_SHORT_DIRECTIONS}, {PIECE_SHORT_DIRECTIONS[ptype.to_piece(player)]}')
         for dy, dx in PIECE_LONG_DIRECTIONS[ptype.to_piece(player)]:
             ny, nx = y + dy, x + dx
-            while is_on_board(ny, nx): # これだとqueenの動きになってしまっている..
-                # quiet
+            while is_on_board(ny, nx):
+                # quiet move
                 if self.can_move_on(player, ny, nx):
                     if not ptype.must_promote_y(player, ny):
                         moves.append(Move((y, x), (ny, nx), False))
@@ -510,15 +505,10 @@ class Position:
         #    print(f'pos={self.fen()}, player={player}, move={move}, oldpiece={oldpiece}')
         return pos1
 
-    # ## あるプレイヤが詰んでいるかどうか? -> 「直前の手が打ち歩詰め」を判定するためには必要 in_checkmate
-    # checkmateであるための必要十分条件:
-    # 1. 王手がかかっている
-    # 2. 王手を回避する合法手がない
-    # 
-    # 合法手がないことはどう書けばいいか？
-    # 1. 自分の駒を動かす
-    # 2. 動かした後のposでin_checkを呼ぶ
-    # 3. これを繰り返す途中で一度でもTrueが返ってきたら，その時点でreturn False
+    # To determine whether a last move is a pawn drop mate, we need to know whether a player is checkmated.
+    # A king is checkmated if and only if both of the following conditions are satisfied:
+    # 1. A king is in check
+    # 2. The checked player has no legal moves
     def in_checkmate(self):
         player = self.side_to_move
         op = player.flip()
@@ -534,13 +524,13 @@ class Position:
                 return False
         return True            
     def legal_piece_positions(self):
-        # 二歩
+        # 二歩 (Ni-Fu, or 'two pawns') 
         for x in range(W):
             if sum(self.board[y][x] == PAWN.to_piece(WHITE) for y in range(H)) > 1:
                 return False
             if sum(self.board[y][x] == PAWN.to_piece(BLACK) for y in range(H)) > 1:
                 return False
-        # 行きどころのない歩，香車，桂馬
+        # 行きどころのない駒 ('pieces with no place to go')
         for x in range(W):
             #print(f'0: x={x}', self.board[0][x], self.board[1][x])
             if self.board[0][x] == PAWN.to_piece(WHITE) or self.board[0][x] == LANCE.to_piece(WHITE) or self.board[0][x] == KNIGHT.to_piece(WHITE):
@@ -563,7 +553,6 @@ class Position:
         return not self.legal_piece_positions() or self.can_capture_op_king()
     def __str__(self):
         return f'Position{(self.side_to_move, self.board, self.hands)}'
-# ## 一手前の局面をすべて作成する generate_previous_positions
 
 def king_checkmate_pawn(pos: Position, y, x):
     assert pos.board[y][x].ptype() == PAWN
@@ -574,7 +563,6 @@ def king_checkmate_pawn(pos: Position, y, x):
     if not is_on_board(nx, ny) or pos.board[ny][nx] != KING.to_piece(player.flip()):
         return False
     return pos.in_checkmate()
-
 
 def generate_previous_moves(pos: Position):
     player = pos.side_to_move

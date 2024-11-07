@@ -1,7 +1,6 @@
 from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y, player2c, Move
 from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT, BLANK, king_checkmate_pawn
 
-
 def test_fen():
     fen = 'l+s+pg3p1/s+p1P1b2N/r+p+p2PRL1/3ppgp2/3+p1+p1GS/1n2n+p+s2/1+b+pK3N1/+p2P4k/2+l1pLpg1[] w'
     pos = Position.from_fen(fen)
@@ -35,13 +34,14 @@ def test_is_consistent():
         assert not p.is_consistent()
 
 def test_legal_piece_positions():
-    # 行き場のない歩
+    # pawn that has no place to go
     for p in ['Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] w', 'Pnsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[l] b', 
               '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[Ll] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/pNSGKGSNL[Ll] b']:
         pos = Position.from_fen(p)
         assert not pos.legal_piece_positions()
         assert pos.fen() == p
-    # 行き場のない香車
+
+    # lance that has no place to go
     for p in ['Lnsgkgsnl/1r5b1/1pppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[lp] w', 'Lnsgkgsnl/1r5b1/1pppppppp/9/9/9/1PPPPPPPP/1B5R1/LNSGKGSNL[lp] b', 
               '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/lNSGKGSNL[lLp] w', '1nsgkgsnl/1r5b1/ppppppppp/9/9/9/1PPPPPPPP/1B5R1/lNSGKGSNL[plL] b']:
         assert not Position.from_fen(p).legal_piece_positions()     
@@ -51,8 +51,9 @@ def test_legal_piece_positions():
                 '4k4/1N7/9/9/9/9/9/9/4K4[pppppppppPPPPllLLnNNssSSggGGbBrR] b',
                 '4k4/9/9/9/9/9/9/9/n3K4[pppppppppPPPPllLLnNNssSSggGGbBrR] w',
                 '4k4/9/9/9/9/9/9/9/n3K4[pppppppppPPPPllLLnNNssSSggGGbBrR] b',]:
-        assert not Position.from_fen(p).legal_piece_positions()              
-    # 二歩
+        assert not Position.from_fen(p).legal_piece_positions()    
+          
+    # Two pawns
     for p in ['1nsgkgsnl/Pr5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] w', 
               '1nsgkgsnl/Pr5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] b',
               'pnsgkgsnl/1r5b1/ppppppppp/9/9/9/P1PPPPPPP/1B5R1/LNSGKGSNL[l] w', 
@@ -69,7 +70,6 @@ def test_in_check():
     pos = Position.from_fen('r7g1/P6Gk/1pppppppp/9/9/2N7/1PPPPPPPP/9/K2R1[lllLnnNPbGGGGggssss] w')
     assert pos.in_check(BLACK)
     assert not pos.in_check(WHITE)
-
 
 def test_apply_move():
     pos = Position.from_fen('r7g/P7k/1pppppppp/9/9/2N6/1PPPPPPPP/9/KG1R5[lllLnnNPbGGGGggssss] w')

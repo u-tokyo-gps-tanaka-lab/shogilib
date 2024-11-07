@@ -33,7 +33,7 @@ def test_generate_previous_positions():
     #print(f'poslist={poslist}')
     for pos1 in poslist1:
         assert pos1 in poslist
-    # 打ち歩詰めの手は溯れない
+    # No way to go back from a move of the Drop Pawn Mate
     assert 'r7g/1P4G1k/1ppppppp1/7G1/2N6/9/P1PPPPPPp/9/KG1R5[PPLNlllnnssssbb] w' not in poslist
 
 def test_generate_previous_positions1():
@@ -46,7 +46,6 @@ def test_generate_previous_positions1():
         assert pos1 in poslist
 
 def test_do_undo():
-    return
     posstr = 'r7g/1P4G1k/1pppppppP/7G1/2N6/9/P1PPPPPPp/9/KG1R5[NLPnnlllssssbb] b'
     pos = Position.from_fen(posstr)
     assert pos.is_consistent()

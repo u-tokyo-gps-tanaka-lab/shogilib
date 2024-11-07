@@ -3,9 +3,9 @@ import json
 from shogilib import Ptype, KING, BLACK, WHITE, ptype_counts, H, W, KING, GOLD, KNIGHT, LANCE, PAWN, SILVER, ROOK, BISHOP, ptype_order
 
 # ptype_order = [KING, GOLD, KNIGHT, LANCE, PAWN, SILVER, ROOK, BISHOP, Ptype.BLANK]
-# (handcounts, boardcounts) を返す．
-# handcounts, boardcounts は
-#　(piece count) のpair
+
+# returns (handcounts, boardcounts).
+# The 'handcounts' and 'boardcounts' are pairs of (piece type, piece count)
 def make_count_sub(i):
     if i >= len(ptype_order) or ptype_order[i] == Ptype.BLANK:
         return [([], [])]
