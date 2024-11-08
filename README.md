@@ -1,2 +1,3 @@
-# shogi
-shogi board library
+# shogilib
+
+Statistical estimation of the number of legal positions in Shogi
