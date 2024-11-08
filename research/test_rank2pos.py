@@ -23,5 +23,7 @@ def test_pos2l():
     l = pos2l(pos)
     flipl = flipH_onboards(l[1])
     assert flipl < l[1]
-
-
+    pos = Position.from_fen('4k4/9/9/9/9/9/9/9/4K4[ppppppppppppppppppnnnnllllggggssssrrbb] w')
+    l = pos2l(pos)
+    flipl = flipH_onboards(l[1])
+    assert flipl == l[1]

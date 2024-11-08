@@ -1,9 +1,6 @@
 from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y, player2c, Move
 from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT, BLANK, king_checkmate_pawn
 
-
-
-
 def test_piece():
     for pl in [WHITE, BLACK]:
         for pt in [PAWN, LANCE, KNIGHT, SILVER, BISHOP, ROOK]:

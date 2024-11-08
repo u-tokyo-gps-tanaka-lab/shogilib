@@ -2,11 +2,17 @@ from shogilib import Position
 from rank import pos2l
 from rank_to_fen import flipH_onboards
 from pprint import pprint
-import argparse
+import argparse, os
 
-def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'flipH_OK_identical_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'flipH_OK_identical_NG.txt'
+def process_file(filename, parfile=False, output_dir='.'):
+    base_filename = os.path.basename(filename)
+    
+    if parfile:
+        file_OK = os.path.join(output_dir, f'{base_filename}_OK.txt')
+        file_NG = os.path.join(output_dir, f'{base_filename}_NG.txt')
+    else:
+        file_OK = os.path.join(output_dir, 'flipH_OK_identical_OK.txt')
+        file_NG = os.path.join(output_dir, 'flipH_OK_identical_NG.txt')
 
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
@@ -15,18 +21,19 @@ def process_file(filename, parfile=False):
                     pos = Position.from_fen(fen)
                     onboards = pos2l(pos)[1]
                     if flipH_onboards(onboards) == onboards:
-                        print(f'True: {fen}')
+                        print(f'True: {fen.strip()}')
                         wf1.write(fen)
                     else:
-                        print(f'False: {fen}')
+                        print(f'False: {fen.strip()}')
                         wf2.write(fen)
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('filename')
     parser.add_argument('-p', '--parallel', action='store_true')
+    parser.add_argument('-o', '--output_dir', default='.', help='Directory to store output files.')
     args = parser.parse_args()
-    process_file(args.filename, args.parallel)
+    process_file(args.filename, args.parallel, args.output_dir)
 
 if __name__ == '__main__':
     main()
