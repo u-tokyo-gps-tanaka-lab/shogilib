@@ -21,8 +21,8 @@ def distance_to_KK(pos):
                         ans += 10
                         pl = piece.player()
                         if pl == WHITE:
-                            if y > 3:
-                                ans += y - 3
+                            if y > 2:
+                                ans += y - 2
                         else:
                             if y < 6:
                                 ans += 6 - y                                
@@ -100,7 +100,10 @@ def process_fen(fen):
     showstate(pos, filename='check_reach_start.png')
     if tf:
         print(f'tf=True, len(ans)={len(ans)}')
-        show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, 'ans.png')
+        # show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, 'ans.png')
+        # ans.reverse()
+        # for i in range(len(ans)):
+        #     showstate(Position.from_fen(ans[i]), filename=f'movie/check_reach_{i+1}.png')
     else:
         print(f'tf=False, ans={ans}')
 
