@@ -31,7 +31,13 @@ piece2img2 = {}
 for piece, img in piece2img.items():
     piece2img2[piece] = img.resize((img.width // 2, img.height // 2))
 
-def position_image(pos):
+def position_image(pos, lang='ja'):
+    vertical_coordinates = {
+        'ja': ['一','二','三','四','五','六','七','八','九'],
+        'en': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    }
+    assert lang in vertical_coordinates
+
     grid = 40
     offset_y = 40
     offset_x = 55
@@ -49,14 +55,13 @@ def position_image(pos):
         draw.line([(offset_x, offset_y + y * grid), (offset_x + W * grid, offset_y + y * grid)],fill=(0,0,0),width=3)
     for x in range(W + 1):
         draw.line([(offset_x + x * grid, offset_y), (offset_x + x * grid, offset_y + H * grid)],fill=(0,0,0),width=3)
-    kanji_numbers = ['一','二','三','四','五','六','七','八','九']
     for x in range(W):
         label = str(W - x)
         x_coord = offset_x + (x + 0.4) * grid
         y_coord = offset_y - 0.75 * grid
         draw.text((x_coord, y_coord), label, font=fnt, fill=(0,0,0))
     for y in range(H):
-        label = kanji_numbers[y]
+        label = vertical_coordinates[lang][y]
         x_coord = offset_x + (W + 0.15) * grid
         y_coord = offset_y + (y + 0.2) * grid
         draw.text((x_coord, y_coord), label, font=fnt, fill=(0,0,0))
@@ -78,7 +83,7 @@ def position_image(pos):
     else:
         # GOTE (above the board)
         draw.text((turnx, turny), '☖\n後\n手\n番', font=fnt, fill=(0,0,0))
-    
+
     # draw pieces in the hands
     for pl in range(2):
         hands = pos.hands[pl]
@@ -95,8 +100,9 @@ def position_image(pos):
             draw.text((cx + 20, cy),'x' + str(v), font=smallfnt, fill=(0,0,0))
     return im
 
-def showstate(state, filename=None):
-    img =  position_image(state)
+def showstate(state, filename=None, lang='ja'):
+    assert lang in ['ja', 'en']
+    img =  position_image(state, lang)
     if filename:
         img.save(filename)
     return img
