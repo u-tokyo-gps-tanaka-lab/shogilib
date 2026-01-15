@@ -2,20 +2,10 @@ from math import comb
 import json
 from shogilib import (
     Ptype,
-    KING,
-    BLACK,
-    WHITE,
     ptype_counts,
     H,
     W,
     KING,
-    GOLD,
-    KNIGHT,
-    LANCE,
-    PAWN,
-    SILVER,
-    ROOK,
-    BISHOP,
     ptype_order,
 )
 from research.paths import output_path

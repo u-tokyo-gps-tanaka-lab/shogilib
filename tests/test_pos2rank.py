@@ -1,20 +1,4 @@
-from itertools import combinations
-from collections import defaultdict, Counter
-import random
-
 from research.rank import (
-    kpos_rank2pos,
-    comb,
-    comb_table_pre,
-    piece_rank2pos,
-    pt2comblist,
-    basic_ptype_rank2pos,
-    pos_x,
-    pos_y,
-    canpromote2comb_table,
-    nopromote2comb_table,
-    rank2l,
-    l2pos,
     pos2rank,
     l2key,
     pos2l,
@@ -23,16 +7,6 @@ from research.rank import (
 from research.paths import data_path
 from shogilib import (
     Position,
-    H,
-    W,
-    KING,
-    WHITE,
-    BLACK,
-    PAWN,
-    SILVER,
-    GOLD,
-    BISHOP,
-    ROOK,
 )
 
 

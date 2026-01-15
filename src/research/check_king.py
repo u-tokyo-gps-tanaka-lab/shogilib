@@ -1,4 +1,3 @@
-import sys
 import argparse
 from shogilib import Position, WHITE
 from research.paths import output_path

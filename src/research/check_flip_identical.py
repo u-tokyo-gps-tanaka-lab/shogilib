@@ -2,8 +2,8 @@ from shogilib import Position
 from research.rank import pos2l
 from research.rank_to_fen import flipH_onboards
 from research.paths import OUTPUT_DIR
-from pprint import pprint
-import argparse, os
+import argparse
+import os
 
 
 def process_file(filename, parfile=False, output_dir="."):

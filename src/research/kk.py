@@ -1,7 +1,6 @@
 from collections import deque
-from shogilib import Position, showstate, show_images_hv
+from shogilib import Position, showstate
 import re
-import random
 
 players = ["Sente", "Gote"]
 

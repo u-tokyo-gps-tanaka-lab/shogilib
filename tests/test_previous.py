@@ -1,16 +1,6 @@
-import sys
 from shogilib import (
-    Ptype,
-    Piece,
     Position,
     Move,
-    BLACK,
-    WHITE,
-    PAWN,
-    GOLD,
-    KNIGHT,
-    LANCE,
-    PAWN,
     generate_previous_moves,
     generate_previous_positions,
 )

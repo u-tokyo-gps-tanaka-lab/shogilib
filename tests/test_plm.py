@@ -1,16 +1,11 @@
-import sys
 from shogilib import (
     Ptype,
-    Piece,
     Position,
     Move,
-    BLACK,
     WHITE,
-    PAWN,
     GOLD,
     KNIGHT,
     LANCE,
-    PAWN,
 )
 
 
@@ -58,13 +53,13 @@ def test_plm_drop():
     moves = []
     pos.all_drop_moves(moves, WHITE)
     assert Move.from_uci("P@a8") in moves
-    assert not Move.from_uci("P@a9") in moves
+    assert Move.from_uci("P@a9") not in moves
     assert Move.from_uci("L@a8") in moves
-    assert not Move.from_uci("L@a9") in moves
+    assert Move.from_uci("L@a9") not in moves
     assert Move.from_uci("P@a7") in moves
-    assert not Move.from_uci("P@a9") in moves
-    assert not Move.from_uci("N@a8") in moves
-    assert not Move.from_uci("N@a9") in moves
+    assert Move.from_uci("P@a9") not in moves
+    assert Move.from_uci("N@a8") not in moves
+    assert Move.from_uci("N@a9") not in moves
 
 
 def test_plm():

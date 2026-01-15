@@ -1,5 +1,5 @@
 import argparse
-from shogilib import Position, WHITE, generate_previous_positions
+from shogilib import WHITE, generate_previous_positions
 from research.rank import countsum, rank2l, rank2pos
 from research.rank_to_fen import flipH_onboards
 from research.check_reach import can_reach_KK

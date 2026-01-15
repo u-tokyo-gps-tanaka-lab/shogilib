@@ -1,10 +1,4 @@
-import sys
-import json
-from math import comb
-from bisect import bisect_left, bisect_right
-from functools import reduce
-from operator import mul
-from shogilib import Ptype, WHITE, BLACK, KING, H, W
+from shogilib import WHITE, BLACK, KING, H, W
 import argparse
 from research.rank import countsum, rank2l, l2pos
 from research.paths import output_path

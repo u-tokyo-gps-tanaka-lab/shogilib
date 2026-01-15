@@ -1,6 +1,3 @@
-import sys
-
-
 def fen_to_sfen(l):
     cs = l.split(" ")
     color = "w" if cs[1] == "b" else "b"

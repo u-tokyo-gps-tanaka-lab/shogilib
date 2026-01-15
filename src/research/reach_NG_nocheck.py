@@ -1,5 +1,5 @@
 from shogilib import Position, showstate, show_images_hv
-from shogilib import Position, WHITE
+from shogilib import WHITE
 from research.paths import output_path
 
 # read from ~ktanaka/work/shogilib/research/reach_NG.txt

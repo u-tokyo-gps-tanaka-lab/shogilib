@@ -1,14 +1,6 @@
 from shogilib import (
     Position,
-    generate_previous_positions,
-    BLANK,
-    KING,
-    W,
-    H,
-    BLACK,
-    WHITE,
 )
-from heapq import heappush, heappop
 from collections import defaultdict
 import sys
 from research.check_reach import can_reach_KK

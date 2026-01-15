@@ -1,4 +1,3 @@
-import sys
 from shogilib import Position, generate_previous_positions, WHITE
 from research.paths import output_path
 import argparse

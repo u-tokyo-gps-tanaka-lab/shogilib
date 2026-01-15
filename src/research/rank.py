@@ -1,4 +1,3 @@
-import sys
 import json
 from math import comb
 from bisect import bisect_left, bisect_right
@@ -309,7 +308,7 @@ def l2rank(l):
         kpos = H * (W // 2) * (H * W - 1) + (j0 % H) + j1 * H
     else:
         print(f"pc2pos={pc2pos}, j0={j0}, j1={j1}")
-        raise ValueError(f"invalid king positions ")
+        raise ValueError("invalid king positions ")
     ans += base * kpos
     base *= KPOS_COUNT
     for i in range(len(hbc[1])):

@@ -13,7 +13,6 @@ from research.rank import (
     pos_y,
     canpromote2comb_table,
     nopromote2comb_table,
-    rank2l,
 )
 from shogilib import (
     H,
@@ -22,11 +21,8 @@ from shogilib import (
     WHITE,
     BLACK,
     PAWN,
-    LANCE,
-    KNIGHT,
     SILVER,
     GOLD,
-    BISHOP,
     ROOK,
 )
 

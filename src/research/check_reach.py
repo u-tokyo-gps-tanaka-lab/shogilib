@@ -7,12 +7,11 @@ from shogilib import (
     generate_previous_positions,
     BLANK,
     KING,
-    BLACK,
     WHITE,
     W,
     H,
 )
-from shogilib import showstate, show_images_hv
+from shogilib import showstate
 from research.paths import output_path
 
 

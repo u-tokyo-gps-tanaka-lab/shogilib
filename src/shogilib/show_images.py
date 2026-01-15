@@ -1,7 +1,7 @@
 from collections import Counter
 
 from shogilib import Ptype, BLACK, WHITE
-from shogilib.position import ptype_kchars, Ptype, Player
+from shogilib.position import ptype_kchars, Ptype
 
 from PIL import Image, ImageDraw, ImageFont
 
