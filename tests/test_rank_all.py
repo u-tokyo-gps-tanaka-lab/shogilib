@@ -1,7 +1,7 @@
 from shogilib import Ptype
 
-from rank_all import count2N, count_ptype
-from rank import canpromote2comb_table, nopromote2comb_table
+from research.rank_all import count2N, count_ptype
+from research.rank import canpromote2comb_table, nopromote2comb_table
 
 def test_count2N():
     c =[[[8, 1], [4, 1], [3, 1], [2, 1], [5, 1], [7, 1], [6, 2]], [[8, 3], [4, 3], [3, 3], [2, 17], [5, 3], [7, 1]]]

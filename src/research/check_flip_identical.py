@@ -1,6 +1,6 @@
 from shogilib import Position
-from rank import pos2l
-from rank_to_fen import flipH_onboards
+from research.rank import pos2l
+from research.rank_to_fen import flipH_onboards
 from pprint import pprint
 import argparse, os
 

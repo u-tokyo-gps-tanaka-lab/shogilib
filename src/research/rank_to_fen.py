@@ -6,7 +6,7 @@ from functools import reduce
 from operator import mul
 from shogilib import Ptype, WHITE, BLACK, KING, H, W
 import argparse
-from rank import countsum, rank2l, l2pos
+from research.rank import countsum, rank2l, l2pos
 
 flipH_OK = []
 flipH_NG = []

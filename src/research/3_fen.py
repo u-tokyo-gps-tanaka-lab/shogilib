@@ -1,5 +1,5 @@
 import shogilib
-from check_reach import distance_to_KK, can_reach_KK
+from research.check_reach import distance_to_KK, can_reach_KK
 
 paper_fens = [
     "1+P1+l2+p+P+N/2+r+LgP+b1P/n+pRp1+p3/1P+L1+pL3/3+p3+S1/1g1n3+s1/GS1k3Sg/pK1+p5/+p+B+nPP1+PP1[] b",

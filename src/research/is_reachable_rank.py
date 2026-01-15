@@ -1,8 +1,8 @@
 import argparse
 from shogilib import Position, WHITE, generate_previous_positions
-from rank import countsum, rank2l, rank2pos
-from rank_to_fen import flipH_onboards
-from check_reach import can_reach_KK
+from research.rank import countsum, rank2l, rank2pos
+from research.rank_to_fen import flipH_onboards
+from research.check_reach import can_reach_KK
 
 def flipH(rank):
     assert rank < countsum

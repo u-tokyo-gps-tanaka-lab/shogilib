@@ -1,5 +1,5 @@
 from math import sqrt
-from rank import countsum as S_all
+from research.rank import countsum as S_all
 
 SAMPLE_ok = 40_491_613
 SAMPLE_all = 5_000_000_000

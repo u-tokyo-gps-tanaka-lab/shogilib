@@ -1,9 +1,9 @@
 from itertools import combinations
 from collections import defaultdict, Counter
 
-from rank import kpos_rank2pos, comb, comb_table_pre, piece_rank2pos, pt2comblist, basic_ptype_rank2pos, pos_x, pos_y, canpromote2comb_table, nopromote2comb_table, rank2l, l2pos, rank2pos, pos2l
+from research.rank import kpos_rank2pos, comb, comb_table_pre, piece_rank2pos, pt2comblist, basic_ptype_rank2pos, pos_x, pos_y, canpromote2comb_table, nopromote2comb_table, rank2l, l2pos, rank2pos, pos2l
 from shogilib import H, W, KING, WHITE, BLACK, PAWN, LANCE, KNIGHT, SILVER, GOLD, BISHOP, ROOK, Position
-from rank_to_fen import flipH_onboards, flipHpos
+from research.rank_to_fen import flipH_onboards, flipHpos
 
 def test_rank2l():
     (hands, onboards) = rank2l(0)

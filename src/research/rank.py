@@ -7,8 +7,9 @@ from operator import mul
 from collections import defaultdict
 
 from shogilib import Ptype, WHITE, BLACK, KING, H, W, Position, BLANK, ptype_order, Piece
+from research.paths import data_path
 
-COUNT2I_JSON = 'count2i.json'
+COUNT2I_JSON = data_path('count2i.json')
 def read_count2i(filename):
     with open(filename) as f:
         return json.load(f)

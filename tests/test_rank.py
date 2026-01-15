@@ -2,7 +2,7 @@ from itertools import combinations
 from collections import defaultdict, Counter
 import random
 
-from rank import kpos_rank2pos, comb, comb_table_pre, piece_rank2pos, pt2comblist, basic_ptype_rank2pos, pos_x, pos_y, canpromote2comb_table, nopromote2comb_table, rank2l
+from research.rank import kpos_rank2pos, comb, comb_table_pre, piece_rank2pos, pt2comblist, basic_ptype_rank2pos, pos_x, pos_y, canpromote2comb_table, nopromote2comb_table, rank2l
 from shogilib import H, W, KING, WHITE, BLACK, PAWN, LANCE, KNIGHT, SILVER, GOLD, BISHOP, ROOK
 
 

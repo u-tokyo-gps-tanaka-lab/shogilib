@@ -2,7 +2,8 @@ from itertools import combinations
 from collections import defaultdict, Counter
 import random
 
-from rank import kpos_rank2pos, comb, comb_table_pre, piece_rank2pos, pt2comblist, basic_ptype_rank2pos, pos_x, pos_y, canpromote2comb_table, nopromote2comb_table, rank2l, l2pos, pos2rank, l2key, pos2l, rank2pos
+from research.rank import kpos_rank2pos, comb, comb_table_pre, piece_rank2pos, pt2comblist, basic_ptype_rank2pos, pos_x, pos_y, canpromote2comb_table, nopromote2comb_table, rank2l, l2pos, pos2rank, l2key, pos2l, rank2pos
+from research.paths import data_path
 from shogilib import Position, H, W, KING, WHITE, BLACK, PAWN, SILVER, GOLD, BISHOP, ROOK
 
 
@@ -38,7 +39,7 @@ def test_pos2rank():
         assert pos == pos1
 RANK_MAX = 80880932079767835177773204009328769812438521503800714936366945233084532
 def test_pos2rank_from_file():
-    with open('check_OK.txt') as f:
+    with open(data_path('check_OK.txt')) as f:
         for lno in range(1000):
             l = f.readline()
             fen = ' '.join(l.split()[:2])
@@ -51,7 +52,7 @@ def test_pos2rank_from_file():
             assert pos == pos1
 
 def test_rank2pos_from_file():
-    with open('RN100M_10000.txt') as f:
+    with open(data_path('RN100M_10000.txt')) as f:
         for lno in range(1000):
             l = f.readline()
             rank = int(l)

@@ -2,7 +2,7 @@ from collections import defaultdict
 from heapq import heappush, heappop
 import argparse
 
-from check_reach import distance_to_KK
+from research.check_reach import distance_to_KK
 from shogilib import Position, generate_previous_positions, BLANK, KING, BLACK, WHITE, W, H
 from shogilib import showstate, show_images_hv        
 

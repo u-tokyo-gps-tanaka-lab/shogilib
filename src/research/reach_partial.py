@@ -2,7 +2,7 @@ from shogilib import Position, generate_previous_positions, BLANK, KING, W, H, B
 from heapq import heappush, heappop
 from collections import defaultdict
 import sys
-from check_reach import can_reach_KK
+from research.check_reach import can_reach_KK
 
 
 assert len(sys.argv) == 2

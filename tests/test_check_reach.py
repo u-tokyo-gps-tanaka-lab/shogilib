@@ -1,5 +1,5 @@
 from shogilib import Position
-from check_reach import distance_to_KK, can_reach_KK
+from research.check_reach import distance_to_KK, can_reach_KK
 
 def test_distance_to_KK():
     pos = Position.from_fen('k8/9/9/9/9/9/9/9/8K[pppppppppPPPPPPPPPllLLnnNNssSSggGGbBrR] b')
