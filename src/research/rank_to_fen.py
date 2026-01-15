@@ -7,6 +7,7 @@ from operator import mul
 from shogilib import Ptype, WHITE, BLACK, KING, H, W
 import argparse
 from research.rank import countsum, rank2l, l2pos
+from research.paths import output_path
 
 flipH_OK = []
 flipH_NG = []
@@ -26,8 +27,8 @@ def flipH_onboards(xs):
     return ans        
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'flipH_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'flipH_NG.txt'
+    file_OK = f'{filename}_OK.txt' if parfile else output_path('flipH_OK.txt')
+    file_NG = f'{filename}_NG.txt' if parfile else output_path('flipH_NG.txt')
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:

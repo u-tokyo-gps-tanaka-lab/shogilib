@@ -3,6 +3,7 @@ from heapq import heappush, heappop
 import argparse
 
 from shogilib import Position, generate_previous_positions, BLANK, KING, Ptype, BLACK, WHITE, W, H, showstate, show_images_hv
+from research.paths import output_path
 
 def f(x, y, pos):
     piece = pos.board[y][x]
@@ -123,8 +124,8 @@ def can_reach_KK(pos):
     # fen = '+p+p+p+p+p+p+p+p+p/+p+p+p+p+p+p+p+p+p/+l+l+l+l+n+n+n+n+s/+s+s+sb5/6g2/6g1K/5r1g1/8g/5+b1k+r[] w'
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'astar_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'astar_NG.txt'
+    file_OK = f'{filename}_OK.txt' if parfile else output_path('astar_OK.txt')
+    file_NG = f'{filename}_NG.txt' if parfile else output_path('astar_NG.txt')
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:
@@ -144,8 +145,8 @@ def process_file(filename, parfile=False):
                         wf2.write(pos.fen() + '\n')
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'reach_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'reach_NG.txt'
+    file_OK = f'{filename}_OK.txt' if parfile else output_path('reach_OK.txt')
+    file_NG = f'{filename}_NG.txt' if parfile else output_path('reach_NG.txt')
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:

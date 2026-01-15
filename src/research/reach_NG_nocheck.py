@@ -1,5 +1,6 @@
 from shogilib import Position, showstate, show_images_hv
 from shogilib import Position, WHITE
+from research.paths import output_path
 
 # read from ~ktanaka/work/shogilib/research/reach_NG.txt
 reach_NG = [
@@ -73,6 +74,6 @@ def save_fen_list(fname, ls):
         wf.write('\n'.join(pos.fen() for pos in ls))
         wf.write('\n')
 
-save_fen_list('reach_NG_nocheck.txt', reach_NG_nocheck)
+save_fen_list(output_path('reach_NG_nocheck.txt'), reach_NG_nocheck)
 
 print(f"Total={len(reach_NG_nocheck)}")

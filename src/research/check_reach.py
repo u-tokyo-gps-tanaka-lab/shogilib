@@ -4,6 +4,7 @@ import argparse
 
 from shogilib import Position, generate_previous_positions, BLANK, KING, BLACK, WHITE, W, H
 from shogilib import showstate, show_images_hv
+from research.paths import output_path
 
 def distance_to_KK(pos):
     ans = 0
@@ -73,8 +74,8 @@ def save_fen_list(fname, ls):
         wf.write('\n')
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'reach_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'reach_NG.txt'
+    file_OK = f'{filename}_OK.txt' if parfile else output_path('reach_OK.txt')
+    file_NG = f'{filename}_NG.txt' if parfile else output_path('reach_NG.txt')
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:

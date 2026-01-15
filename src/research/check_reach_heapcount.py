@@ -3,6 +3,7 @@ from heapq import heappush, heappop
 import argparse
 
 from research.check_reach import distance_to_KK
+from research.paths import output_path
 from shogilib import Position, generate_previous_positions, BLANK, KING, BLACK, WHITE, W, H
 from shogilib import showstate, show_images_hv        
 
@@ -36,8 +37,8 @@ def can_reach_KK(pos):
     return (False, (maxd[0], maxd[1].fen()), i)
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'reach_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'reach_NG.txt'
+    file_OK = f'{filename}_OK.txt' if parfile else output_path('reach_OK.txt')
+    file_NG = f'{filename}_NG.txt' if parfile else output_path('reach_NG.txt')
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:

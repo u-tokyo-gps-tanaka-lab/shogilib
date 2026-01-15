@@ -1,6 +1,7 @@
 from shogilib import Position
 from research.rank import pos2l
 from research.rank_to_fen import flipH_onboards
+from research.paths import OUTPUT_DIR
 from pprint import pprint
 import argparse, os
 
@@ -31,7 +32,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('filename')
     parser.add_argument('-p', '--parallel', action='store_true')
-    parser.add_argument('-o', '--output_dir', default='.', help='Directory to store output files.')
+    parser.add_argument('-o', '--output_dir', default=OUTPUT_DIR, help='Directory to store output files.')
     args = parser.parse_args()
     process_file(args.filename, args.parallel, args.output_dir)
 

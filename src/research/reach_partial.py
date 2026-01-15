@@ -3,6 +3,7 @@ from heapq import heappush, heappop
 from collections import defaultdict
 import sys
 from research.check_reach import can_reach_KK
+from research.paths import output_path
 
 
 assert len(sys.argv) == 2
@@ -33,9 +34,9 @@ print(f'reachNG={len(reachNG)}, reachOK={len(reachOK)}')
 print(f'reachNG[:10] = {[pos.fen() for pos in reachNG[:10]]}') 
 print(f'reachOK[:10] = {[pos.fen() for pos in reachOK[:10]]}') 
 
-with open(f'reachOK.{infname}.txt', 'w') as wf:
+with open(output_path(f'reachOK.{infname}.txt'), 'w') as wf:
     for pos in reachOK:
         wf.write(pos.fen() + '\n')
-with open(f'reachNG.{infname}.txt', 'w') as wf:
+with open(output_path(f'reachNG.{infname}.txt'), 'w') as wf:
     for pos in reachNG:
         wf.write(pos.fen() + '\n')

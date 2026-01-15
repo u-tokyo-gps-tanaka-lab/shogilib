@@ -1,6 +1,7 @@
 import sys
 import argparse
 from shogilib import Position, WHITE
+from research.paths import output_path
 def load_fen_list(fname):
     ans = []
     with open(fname) as f:
@@ -15,8 +16,8 @@ def save_fen_list(fname, ls):
         wf.write('\n')
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else 'piece_OK.txt'
-    file_NG = f'{filename}_NG.txt' if parfile else 'piece_NG.txt'
+    file_OK = f'{filename}_OK.txt' if parfile else output_path('piece_OK.txt')
+    file_NG = f'{filename}_NG.txt' if parfile else output_path('piece_NG.txt')
     with open(filename) as f:
         with open(file_OK, 'w') as wf1:
             with open(file_NG, 'w') as wf2:
