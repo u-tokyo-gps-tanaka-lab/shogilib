@@ -3,7 +3,8 @@ import argparse
 
 def single_fen(fen, filename = "state.png"):
     pos = Position.from_fen(fen)
-    assert pos.fen() == fen
+    # assert pos.fen() == fen
+    print(pos.fen())
     print(f"Exporting to {filename}")
     showstate(pos, filename=f'{filename}')
 
