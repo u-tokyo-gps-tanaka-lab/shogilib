@@ -1,6 +1,28 @@
 import random
-from shogilib import Player, Ptype, Piece, Position, BLACK, WHITE, can_promote_y, player2c, Move
-from shogilib import KING, ROOK, BISHOP, GOLD, SILVER, PAWN, LANCE, KNIGHT, BLANK, king_checkmate_pawn
+from shogilib import (
+    Player,
+    Ptype,
+    Piece,
+    Position,
+    BLACK,
+    WHITE,
+    can_promote_y,
+    player2c,
+    Move,
+)
+from shogilib import (
+    KING,
+    ROOK,
+    BISHOP,
+    GOLD,
+    SILVER,
+    PAWN,
+    LANCE,
+    KNIGHT,
+    BLANK,
+    king_checkmate_pawn,
+)
+
 
 def test_ptype_promote():
     for pt in [PAWN, LANCE, KNIGHT, SILVER, BISHOP, ROOK]:
@@ -11,6 +33,7 @@ def test_ptype_promote():
     for pt in [KING, GOLD]:
         assert not pt.can_promote()
         assert not pt.is_promoted()
+
 
 def test_must_promote_y():
     assert PAWN.must_promote_y(WHITE, 0)
@@ -27,6 +50,7 @@ def test_must_promote_y():
     assert KNIGHT.must_promote_y(BLACK, 7)
     assert not KNIGHT.must_promote_y(WHITE, 2)
     assert not KNIGHT.must_promote_y(BLACK, 6)
+
 
 def test_order():
     assert PAWN.promote() < PAWN
@@ -45,6 +69,6 @@ def test_order():
                     assert pt0.promote() < pt1
             else:
                 assert not pt0 < pt1
-    ptypes1 = random.sample(ptypes, len(ptypes))            
+    ptypes1 = random.sample(ptypes, len(ptypes))
     ptypes1.sort()
     assert ptypes == ptypes1

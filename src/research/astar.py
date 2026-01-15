@@ -2,8 +2,21 @@ from collections import defaultdict
 from heapq import heappush, heappop
 import argparse
 
-from shogilib import Position, generate_previous_positions, BLANK, KING, Ptype, BLACK, WHITE, W, H, showstate, show_images_hv
+from shogilib import (
+    Position,
+    generate_previous_positions,
+    BLANK,
+    KING,
+    Ptype,
+    BLACK,
+    WHITE,
+    W,
+    H,
+    showstate,
+    show_images_hv,
+)
 from research.paths import output_path
+
 
 def f(x, y, pos):
     piece = pos.board[y][x]
@@ -15,7 +28,7 @@ def f(x, y, pos):
         y = 8 - y
     if ptype == KING:
         if y >= 2:
-            for y1 in range(y +1, 9):
+            for y1 in range(y + 1, 9):
                 y2 = (8 - y1) if pl == BLACK else y1
                 p = pos.board[y2][x]
                 if p != BLANK and p.player() == pl:
@@ -26,13 +39,13 @@ def f(x, y, pos):
                         if y2 >= 4:
                             return 1
         return 0
-                
+
     if not ptype.is_promoted():
         return 1
     if ptype == Ptype.PROOK:
         return 2
     if ptype == Ptype.PBISHOP:
-        if (y, x) in [(7,4), (8,3), (8,4), (8,5)]:
+        if (y, x) in [(7, 4), (8, 3), (8, 4), (8, 5)]:
             return 3
         else:
             return 2
@@ -40,15 +53,16 @@ def f(x, y, pos):
         if y <= 3:
             return 2
         else:
-            return y -1
+            return y - 1
     assert ptype in [Ptype.PPAWN, Ptype.PLANCE, Ptype.PKNIGHT]
-    if y <=2:
+    if y <= 2:
         return 2
     else:
         return y
 
+
 def admissible_heuristic(pos):
-    value = [0, 0] # b, w
+    value = [0, 0]  # b, w
     for y in range(H):
         for x in range(W):
             piece = pos.board[y][x]
@@ -58,9 +72,10 @@ def admissible_heuristic(pos):
                 # print(value)
     ans = max(value) * 2
     i = pos.side_to_move.value
-    if value[1-i] > value[i]:
+    if value[1 - i] > value[i]:
         ans -= 1
     return ans
+
 
 def distance_to_KK(pos):
     ans = 0
@@ -82,11 +97,12 @@ def distance_to_KK(pos):
                                 ans += y - 3
                         else:
                             if y < 6:
-                                ans += 6 - y                                
+                                ans += 6 - y
     assert len(kings) == 2
     # if abs(kings[0][0] - kings[1][0]) + abs(kings[0][1] - kings[1][1]) <= 2:
     #     ans += 10
-    return ans        
+    return ans
+
 
 def can_reach_KK(pos):
     prev = {}
@@ -101,7 +117,7 @@ def can_reach_KK(pos):
         _, h_pos1, pos1 = heappop(q)
         i += 1
         if i % 100 == 0:
-            print(f'i={i}, len(q)={len(q)}, h_pos1={h_pos1}, pos1={pos1.fen()}')
+            print(f"i={i}, len(q)={len(q)}, h_pos1={h_pos1}, pos1={pos1.fen()}")
         if h_pos1 == 0:
             ans = [pos1]
             while pos1 != pos:
@@ -123,72 +139,82 @@ def can_reach_KK(pos):
     # fen = 'K2g2+N2/1n+P3+pp+L/k1s1+P2n+P/1R2+b1l1+R/5+p+S2/+P1+P3g1+P/1+L+N+p1g2G/L1+P1+P1+PP+P/+SB1+p+P4[Ps] w'
     # fen = '+p+p+p+p+p+p+p+p+p/+p+p+p+p+p+p+p+p+p/+l+l+l+l+n+n+n+n+s/+s+s+sb5/6g2/6g1K/5r1g1/8g/5+b1k+r[] w'
 
-def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else output_path('astar_OK.txt')
-    file_NG = f'{filename}_NG.txt' if parfile else output_path('astar_NG.txt')
-    with open(filename) as f:
-        with open(file_OK, 'w') as wf1:
-            with open(file_NG, 'w') as wf2:
-                for fen in f:
-                    pos = Position.from_fen(fen)
-                    assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-                    tf, ans = can_reach_KK(pos)
-                    if tf:
-                        print(f'tf=True, len(ans)={len(ans)}')
-                    else:
-                        print(f'tf=False, ans={ans}')
-                    if tf:
-                        assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-                        wf1.write(pos.fen() + '\n')
-                    else:
-                        assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-                        wf2.write(pos.fen() + '\n')
 
 def process_file(filename, parfile=False):
-    file_OK = f'{filename}_OK.txt' if parfile else output_path('reach_OK.txt')
-    file_NG = f'{filename}_NG.txt' if parfile else output_path('reach_NG.txt')
+    file_OK = f"{filename}_OK.txt" if parfile else output_path("astar_OK.txt")
+    file_NG = f"{filename}_NG.txt" if parfile else output_path("astar_NG.txt")
     with open(filename) as f:
-        with open(file_OK, 'w') as wf1:
-            with open(file_NG, 'w') as wf2:
+        with open(file_OK, "w") as wf1:
+            with open(file_NG, "w") as wf2:
                 for fen in f:
                     pos = Position.from_fen(fen)
-                    assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
+                    assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
+                    tf, ans = can_reach_KK(pos)
+                    if tf:
+                        print(f"tf=True, len(ans)={len(ans)}")
+                    else:
+                        print(f"tf=False, ans={ans}")
+                    if tf:
+                        assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
+                        wf1.write(pos.fen() + "\n")
+                    else:
+                        assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
+                        wf2.write(pos.fen() + "\n")
+
+
+def process_file(filename, parfile=False):
+    file_OK = f"{filename}_OK.txt" if parfile else output_path("reach_OK.txt")
+    file_NG = f"{filename}_NG.txt" if parfile else output_path("reach_NG.txt")
+    with open(filename) as f:
+        with open(file_OK, "w") as wf1:
+            with open(file_NG, "w") as wf2:
+                for fen in f:
+                    pos = Position.from_fen(fen)
+                    assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
                     tf, ans, heap_count = can_reach_KK(pos)
                     if tf:
-                        print(f'tf=True, len(ans)={len(ans)}, heap_count={heap_count}')
+                        print(f"tf=True, len(ans)={len(ans)}, heap_count={heap_count}")
                     else:
-                        print(f'tf=False, ans={ans}, heap_count={heap_count}')
+                        print(f"tf=False, ans={ans}, heap_count={heap_count}")
                     if tf:
-                        assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-                        wf1.write(pos.fen() + '\n')
+                        assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
+                        wf1.write(pos.fen() + "\n")
                     else:
-                        assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
-                        wf2.write(pos.fen() + '\n')
+                        assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
+                        wf2.write(pos.fen() + "\n")
+
 
 def process_fen(fen):
     pos = Position.from_fen(fen)
-    assert pos.side_to_move == WHITE, f'pos={pos.fen()}'
+    assert pos.side_to_move == WHITE, f"pos={pos.fen()}"
     tf, ans, heap_count = can_reach_KK(pos)
     if tf:
-        print(f'tf=True, len(ans)={len(ans)}, heap_count={heap_count}')
-        show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, 'ans.png')
+        print(f"tf=True, len(ans)={len(ans)}, heap_count={heap_count}")
+        show_images_hv([showstate(Position.from_fen(f)) for f in ans], 5, "ans.png")
     else:
-        print(f'tf=False, ans={ans}, heap_count={heap_count}')
+        print(f"tf=False, ans={ans}, heap_count={heap_count}")
+
 
 def main():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--fen', nargs=1, metavar='FEN')
-    group.add_argument('--file', nargs=1, metavar='FILENAME')
-    parser.add_argument('-p', '--parallel', action='store_true', help='for parallel processing; requires --file option')
+    group.add_argument("--fen", nargs=1, metavar="FEN")
+    group.add_argument("--file", nargs=1, metavar="FILENAME")
+    parser.add_argument(
+        "-p",
+        "--parallel",
+        action="store_true",
+        help="for parallel processing; requires --file option",
+    )
     args = parser.parse_args()
 
     if args.parallel and not args.file:
-        parser.error('-p option requires --file option')
+        parser.error("-p option requires --file option")
     if args.fen:
         process_fen(args.fen[0])
     else:
         process_file(args.file[0], args.parallel)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -54,11 +54,11 @@ reach_NG = [
     "2k1+p+n3/+Lg5l1/+BK1P3+PR/gs+pp3+p1/+pP2b+P2N/4p+p2+p/1+p1nR1L+p+n/1+S2g1G2/+P+P+p+P+S+s2L[] w",
     "l5+p1g/+S1n2b1G1/+p+R4s1s/+p+n+l+Pn+p3/1N+S3lB1/1pp+P1gG+p+p/k2p1+P+P+p1/+p2+l5/+RK1P+p2+p1[] w",
     "G+S2+s+Bp2/5pP2/2+p+lK1+nL+P/+pgkp3+Rr/4+P2+L1/+p1+P4+PB/+SP2N2+PN/P+Lg1+S2+p1/3+nG1+P+P1[P] w",
-    "pk2+P3+P/1+p+pS1G2g/K+RP+P+P3s/3pL+n+S1+N/2s3+P1p/4G+P1P+p/nL2+PG+bpP/+rl1B5/2+p5+N[l] w"
+    "pk2+P3+P/1+p+pS1G2g/K+RP+P+P3s/3pL+n+S1+N/2s3+P1p/4G+P1P+p/nL2+PG+bpP/+rl1B5/2+p5+N[l] w",
 ]
 
 images = [showstate(Position.from_fen(fen)) for fen in reach_NG]
-show_images_hv(images, 7, filename='reach_NG.png')
+show_images_hv(images, 7, filename="reach_NG.png")
 
 reach_NG_nocheck = []
 
@@ -69,11 +69,13 @@ for fen in reach_NG:
     if not pos.in_check(WHITE):
         reach_NG_nocheck.append(fen)
 
-def save_fen_list(fname, ls):
-    with open(fname, 'w') as wf:
-        wf.write('\n'.join(pos.fen() for pos in ls))
-        wf.write('\n')
 
-save_fen_list(output_path('reach_NG_nocheck.txt'), reach_NG_nocheck)
+def save_fen_list(fname, ls):
+    with open(fname, "w") as wf:
+        wf.write("\n".join(pos.fen() for pos in ls))
+        wf.write("\n")
+
+
+save_fen_list(output_path("reach_NG_nocheck.txt"), reach_NG_nocheck)
 
 print(f"Total={len(reach_NG_nocheck)}")
