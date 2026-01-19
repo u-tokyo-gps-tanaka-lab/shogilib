@@ -24,16 +24,7 @@ You need to have IPAGothic font in your system to visualize positions.
 $ uv run python rank_all.py
 ```
 
-If the program works correctly, you should see the following outputs and get `count2i.json`. `16014219505238849250` is the number of elements in $S_{all}$.
-
-```text
-### 1. generate $S_{all}$ and rank its elements
-
-```bash
-$ uv run python rank_all.py
-```
-
-If the program works correctly, you should see the following outputs and get `count2i.json`. `16014219505238849250` is the number of elements in $S_{all}$.
+If the program works correctly, you should see the following outputs and get `count2i.json`. `80880932079767835177773204009328769812438521503800714936366945233084532` is the number of elements in $S_{all}$.
 
 ```text
 make_count_sub(i=7) return len(ans)=3
